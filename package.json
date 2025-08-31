@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx ./src/app.ts --watch --env-file=.env",
+    "start": "tsx --watch ./src/app.ts --env-file=.env",
     "build": "tsc --build"
   },
   "keywords": [],
