@@ -23,11 +23,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-
   },
   "exclude": [
       "eslint.config.mts"
   ],
-  "experimentalDecorators": true,
-  "emitDecoratorMetadata": true,
 }

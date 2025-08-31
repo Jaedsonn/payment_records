@@ -1,5 +1,6 @@
 import express from 'express';
 import { AppDataSource } from './shared/data-source';
+import "reflect-metadata"
 
 process.loadEnvFile();
 
@@ -18,7 +19,6 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Error during Data Source initialization:", err);
   });
-
 
 app.get("/", (req, res) =>{
   res.send("Hello World!");
