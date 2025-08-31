@@ -1,6 +1,8 @@
 import express from 'express';
 import { AppDataSource } from './shared/data-source';
+import AuthRouter from '@modules/Auth/auth.routes';
 import "reflect-metadata"
+
 
 process.loadEnvFile();
 
@@ -8,6 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use("/auth", AuthRouter);
 
 AppDataSource.initialize()
   .then(() => {
@@ -19,8 +22,4 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Error during Data Source initialization:", err);
   });
-
-app.get("/", (req, res) =>{
-  res.send("Hello World!");
-})
 
