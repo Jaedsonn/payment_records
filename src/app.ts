@@ -2,6 +2,7 @@ import express from 'express';
 import { AppDataSource } from './shared/data-source';
 import AuthRouter from '@modules/Auth/auth.routes';
 import "reflect-metadata"
+import ErrorHandler from "@middlewares/error";
 
 
 process.loadEnvFile();
@@ -11,6 +12,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use("/auth", AuthRouter);
+app.use(ErrorHandler.handle);
 
 AppDataSource.initialize()
   .then(() => {

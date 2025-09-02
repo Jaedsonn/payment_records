@@ -14,7 +14,8 @@
     "paths": {
       "@shared/*": ["shared/*"],
       "@modules/*": ["modules/*"],
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@middlewares/*": ["middlewares/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
