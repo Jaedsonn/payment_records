@@ -15,7 +15,8 @@
       "@shared/*": ["shared/*"],
       "@modules/*": ["modules/*"],
       "@lib/*": ["lib/*"],
-      "@middlewares/*": ["middlewares/*"]
+      "@middlewares/*": ["middlewares/*"],
+      "@core/*": ["core/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
