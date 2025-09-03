@@ -16,4 +16,12 @@ export class AuthController{
       return next(ErrorEnum.USER_ALREADY_EXISTS);
     }
   }
+
+      login = async (req: Request, res: Response, next: NextFunction) =>{
+      try {
+        const user = await this.authService.login(req.body)
+      } catch (error) {
+        return next(ErrorEnum.INVALID_CREDENTIALS)
+      }
+    }
 }
