@@ -1,0 +1,22 @@
+import z from "zod"
+
+process.loadEnvFile();
+
+const envSchema = z.object({
+DB_PORT: z.string(),
+DB_HOST: z.string(),
+DB_USERNAME: z.string(),
+DB_PASSWORD: z.string(),
+DB_DATABASE: z.string(),
+PORT: z.string().or(z.number()),
+
+SMTP_HOST: z.string(),
+EMAIL_USER: z.string(),
+EMAIL_PASS: z.string(),
+
+JWT_SECRET: z.string(),
+ACCESS_EXPIRE: z.string().or(z.number()),
+REFRESH_EXPIRE: z.string().or(z.number()),
+}, {error: "Missing variables in env file"})
+
+export const env = z.parse(envSchema, process.env)
