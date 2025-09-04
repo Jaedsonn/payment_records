@@ -4,6 +4,8 @@ import { LoginUserDto } from "./dto/login.dto";
 import { AuthRepository } from "./repository/auth.repository";
 import {hashPassword, comparePasswords} from "@lib/utils"
 import { ErrorEnum } from "@lib/enums";
+import { env } from "@shared/env";
+import jwt from "jsonwebtoken"
 
 export class AuthService{
   constructor(
@@ -15,9 +17,8 @@ export class AuthService{
     if (isAlreadyRegistered) {
       throw new Error(ErrorEnum.USER_ALREADY_EXISTS.message);
     }
-    const user = await  this.authRepository.create(createUserDTO);
     createUserDTO.password = await hashPassword(createUserDTO.password);
-    Object.assign(user, createUserDTO);
+    const user = await  this.authRepository.create(createUserDTO);
     return user;
   }
 
@@ -27,14 +28,31 @@ export class AuthService{
     if(!user){
       throw new Error(ErrorEnum.INVALID_CREDENTIALS.message);
     }
-
     const isValidPassword = await comparePasswords(LoginUserDto.password, user.password);
-
     if(!isValidPassword){
       throw new Error(ErrorEnum.INVALID_CREDENTIALS.message);
     };
 
-    return user
+  const acess_token = jwt.sign(
+      {
+      email: user.email,
+      id: user.id
+    }, env.JWT_SECRET,
+    {expiresIn: env.ACCESS_EXPIRE as number})
 
+    const refresh_token = jwt.sign({
+      id: user.id
+    }, env.JWT_SECRET,
+    {
+      expiresIn: env.REFRESH_EXPIRE as number
+    })
+
+    return {
+      ...user,
+      acess_token,
+      refresh_token
+    }
   }
+
+
 }
