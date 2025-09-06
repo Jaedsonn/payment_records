@@ -54,5 +54,23 @@ export class AuthService{
     }
   }
 
+  async refreshToken( refreshToken: string) {
+
+      const decoded = jwt.verify(refreshToken, env.JWT_SECRET);
+
+      if(!decoded) throw new Error(ErrorEnum.UNAUTHORIZED.message);
+
+      const newAccessToken = jwt.sign(
+        {
+          id: (decoded as {id: string}).id
+        },
+        env.JWT_SECRET,
+        { expiresIn: env.ACCESS_EXPIRE as number }
+      );
+
+      return {
+        access_token: newAccessToken
+      };
+  }
 
 }

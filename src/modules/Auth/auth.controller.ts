@@ -2,6 +2,7 @@ import { AuthService } from "./auth.service";
 import { NextFunction, Request, Response } from "express";
 import { ErrorEnum } from "@lib/enums";
 import { env } from "@shared/env";
+import { extractTokenFromHeader } from "@lib/utils";
 
 export class AuthController{
   constructor(
@@ -9,14 +10,14 @@ export class AuthController{
   ){
   }
 
-   register = async (req: Request, res: Response, next: NextFunction) =>{
-    try {
-      const user = await this.authService.register(req.body);
-      return res.status(200).json(user);
-    } catch (error) {
-      return next(ErrorEnum.USER_ALREADY_EXISTS);
-    }
-  }
+      register = async (req: Request, res: Response, next: NextFunction) =>{
+        try {
+          const user = await this.authService.register(req.body);
+          return res.status(200).json(user);
+        } catch (error) {
+          return next(ErrorEnum.USER_ALREADY_EXISTS);
+        }
+      }
 
       login = async (req: Request, res: Response, next: NextFunction) =>{
       try {
@@ -38,4 +39,21 @@ export class AuthController{
         return next(ErrorEnum.INVALID_CREDENTIALS)
       }
     }
+
+      refreshToken = async (req: Request, res: Response, next: NextFunction) =>{
+        try {
+          const refresh_token = extractTokenFromHeader(req.headers);
+          const acess_token = await this.authService.refreshToken(refresh_token);
+          return res.status(200).cookie(
+            'acess_token',
+            acess_token, {
+            sameSite: "strict",
+            httpOnly: true,
+            maxAge: env.ACCESS_EXPIRE as number,
+            secure: true,
+          }).json({message: "Token refreshed"})
+        } catch (error) {
+          return next(ErrorEnum.UNAUTHORIZED)
+        }
+      }
 }
