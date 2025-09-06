@@ -29,4 +29,8 @@ export class AuthRepository implements IAuthRepository<User> {
     return await this.repository.findOne({ where: { id } }) || null;
   }
 
+  async updateUser(id: string, updateData: Partial<User>): Promise<void> {
+    await this.repository.update(id, updateData);
+  }
+
 }
