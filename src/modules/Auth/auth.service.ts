@@ -73,4 +73,11 @@ export class AuthService{
       };
   }
 
+   logout(){
+    // Not implemented because we are using stateless JWT tokens
+    return;
+  }
+
+
+
 }

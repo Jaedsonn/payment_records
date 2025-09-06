@@ -56,4 +56,13 @@ export class AuthController{
           return next(ErrorEnum.UNAUTHORIZED)
         }
       }
+
+      logout =  (req: Request, res: Response, next: NextFunction) => {
+        try {
+          this.authService.logout();
+          return res.clearCookie('acess_token').clearCookie('refresh_token').status(200).json({message: "Logged out successfully"})
+        } catch (error) {
+          return next(ErrorEnum.INTERNAL_SERVER_ERROR)
+        }
+  }
 }
