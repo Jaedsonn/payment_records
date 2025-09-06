@@ -64,5 +64,18 @@ export class AuthController{
         } catch (error) {
           return next(ErrorEnum.INTERNAL_SERVER_ERROR)
         }
-  }
+      }
+
+      forgotPassword = async (req: Request, res: Response, next: NextFunction) =>{
+        try {
+          const message = await this.authService.forgotPassword(req.body.email);
+          return res.status(200).json(message);
+        } catch (error) {
+          console.log(error)
+          if(error.message === ErrorEnum.NOT_FOUND.message){
+            return next(ErrorEnum.NOT_FOUND)
+          }
+          return next(ErrorEnum.INTERNAL_SERVER_ERROR)
+        }
+      }
 }

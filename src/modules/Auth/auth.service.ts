@@ -6,10 +6,13 @@ import {hashPassword, comparePasswords} from "@lib/utils"
 import { ErrorEnum } from "@lib/enums";
 import { env } from "@shared/env";
 import jwt from "jsonwebtoken"
+import { Email } from "@core/abstractions/email";
+import { MailOptions } from "@lib/types";
 
 export class AuthService{
   constructor(
-    private readonly authRepository: AuthRepository
+    private readonly authRepository: AuthRepository,
+    private readonly emailService: Email<MailOptions>
   ){}
 
   async register(createUserDTO: CreateUserDto): Promise<User> {
@@ -37,12 +40,12 @@ export class AuthService{
       {
       email: user.email,
       id: user.id
-    }, env.JWT_SECRET,
+    }, env.ACCESS_SECRET,
     {expiresIn: env.ACCESS_EXPIRE as number})
 
     const refresh_token = jwt.sign({
       id: user.id
-    }, env.JWT_SECRET,
+    }, env.REFRESH_SECRET,
     {
       expiresIn: env.REFRESH_EXPIRE as number
     })
@@ -56,7 +59,7 @@ export class AuthService{
 
   async refreshToken( refreshToken: string) {
 
-      const decoded = jwt.verify(refreshToken, env.JWT_SECRET);
+      const decoded = jwt.verify(refreshToken, env.REFRESH_SECRET);
 
       if(!decoded) throw new Error(ErrorEnum.UNAUTHORIZED.message);
 
@@ -64,7 +67,7 @@ export class AuthService{
         {
           id: (decoded as {id: string}).id
         },
-        env.JWT_SECRET,
+        env.ACCESS_SECRET,
         { expiresIn: env.ACCESS_EXPIRE as number }
       );
 
@@ -76,6 +79,32 @@ export class AuthService{
    logout(){
     // Not implemented because we are using stateless JWT tokens
     return;
+  }
+
+  async forgotPassword(email: string){
+    const user = await this.authRepository.findByEmail(email);
+
+    if(!user) throw new Error(ErrorEnum.NOT_FOUND.message);
+
+    const resetToken = jwt.sign(
+      { id: user.id },
+      env.RESET_SECRET,
+      { expiresIn: env.RESET_EXPIRE as number }
+    );
+
+    try {
+    await this.emailService.send({
+      to: user.email,
+      subject: "Password Reset",
+      from: process.env.EMAIL_USER,
+      text: `You requested a password reset. Use the following token to reset your password: ${resetToken}`,
+      html: `<p>You requested a password reset. Use the following token to reset your password:</p><p><b>${resetToken}</b></p>`
+    })
+      return {message: "Password reset email sent"}
+    } catch (error) {
+      console.log(error)
+      throw new Error(ErrorEnum.INTERNAL_SERVER_ERROR.message);
+    }
   }
 
 
