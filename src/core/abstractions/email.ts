@@ -2,10 +2,10 @@ export interface EmailTransporter{
   sendEmail(mailOptions: any): any
 }
 
-export abstract class Email{
+export abstract class Email<T>{
   constructor(
     protected readonly transporter: EmailTransporter
   ){}
 
-  abstract send(mailOptions: any): any;
+  abstract send(mailOptions: T): any;
 }

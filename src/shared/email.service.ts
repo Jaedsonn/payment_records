@@ -1,12 +1,13 @@
 import { Email } from "core/abstractions/email";
-import * as nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
+import { MailOptions } from "@lib/types";
 
 
-class Nodemailer extends Email{
+class Nodemailer extends Email<MailOptions>{
 
   constructor(){
     super({
-      sendEmail: async (options) => {
+      sendEmail: async (options: MailOptions) => {
         const transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST!,
           port: 465,
