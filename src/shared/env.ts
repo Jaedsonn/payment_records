@@ -14,9 +14,12 @@ SMTP_HOST: z.string(),
 EMAIL_USER: z.string(),
 EMAIL_PASS: z.string(),
 
-JWT_SECRET: z.string(),
+ACCESS_SECRET: z.string(),
 ACCESS_EXPIRE: z.string().or(z.number()),
+REFRESH_SECRET: z.string(),
 REFRESH_EXPIRE: z.string().or(z.number()),
+RESET_SECRET: z.string(),
+RESET_EXPIRE: z.string().or(z.number()),
 }, {error: "Missing variables in env file"})
 
 export const env = z.parse(envSchema, process.env)
