@@ -25,4 +25,8 @@ export class AuthRepository implements IAuthRepository<User> {
     return this.repository.save(newUser);
   }
 
+  async findById(id: string): Promise<User | null> {
+    return await this.repository.findOne({ where: { id } }) || null;
+  }
+
 }
