@@ -93,6 +93,7 @@ export class AuthService{
     );
 
     try {
+      // TODO: Implement email with link to frontend page to reset password
     await this.emailService.send({
       to: user.email,
       subject: "Password Reset",
@@ -105,6 +106,21 @@ export class AuthService{
       console.log(error)
       throw new Error(ErrorEnum.INTERNAL_SERVER_ERROR.message);
     }
+  }
+
+  async resetPassword(token: string, newPassword: string){
+    const decoded = jwt.verify(token, env.RESET_SECRET);
+    if(!decoded) throw new Error(ErrorEnum.UNAUTHORIZED.message);
+
+    const userId = (decoded as {id: string}).id;
+
+    const user = await this.authRepository.findById(userId);
+
+    if(!user) throw new Error(ErrorEnum.NOT_FOUND.message);
+
+    const hashedPassword = await hashPassword(newPassword);
+    await this.authRepository.updateUser(userId, {password: hashedPassword});
+    return {message: "Password updated successfully"}
   }
 
 

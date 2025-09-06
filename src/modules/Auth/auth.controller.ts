@@ -78,4 +78,21 @@ export class AuthController{
           return next(ErrorEnum.INTERNAL_SERVER_ERROR)
         }
       }
+
+      resetPassword = async (req: Request, res: Response, next: NextFunction) =>{
+        try {
+          const { token, newPassword } = req.body;
+          const message = await this.authService.resetPassword(token, newPassword);
+          return res.status(200).json(message);
+        } catch (error) {
+          if(error.message === ErrorEnum.NOT_FOUND.message){
+            return next(ErrorEnum.NOT_FOUND)
+          }
+
+          if(error.message === ErrorEnum.UNAUTHORIZED.message){
+            return next(ErrorEnum.UNAUTHORIZED)
+          }
+          return next(ErrorEnum.INTERNAL_SERVER_ERROR)
+        }
+      }
 }
