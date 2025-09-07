@@ -43,7 +43,7 @@ export class AuthService{
       throw new Error(ErrorEnum.INVALID_CREDENTIALS.message);
     };
 
-  const acess_token = jwt.sign(
+  const access_token = jwt.sign(
       {
       email: user.email,
       id: user.id
@@ -59,7 +59,7 @@ export class AuthService{
 
     return {
       ...user,
-      acess_token,
+      access_token,
       refresh_token
     }
   }

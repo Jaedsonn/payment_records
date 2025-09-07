@@ -21,11 +21,11 @@ export class AuthController{
 
       login = async (req: Request, res: Response, next: NextFunction) =>{
       try {
-        const {acess_token, refresh_token, ...user} = await this.authService.login(req.body);
+        const {access_token, refresh_token, ...user} = await this.authService.login(req.body);
 
         res.status(200).cookie(
-          'acess_token',
-          acess_token, {
+          'access_token',
+          access_token, {
           sameSite: "strict",
           httpOnly: true,
           maxAge: env.ACCESS_EXPIRE as number,
@@ -42,11 +42,11 @@ export class AuthController{
 
       refreshToken = async (req: Request, res: Response, next: NextFunction) =>{
         try {
-          const refresh_token = extractTokenFromHeader(req.headers);
-          const acess_token = await this.authService.refreshToken(refresh_token);
+          const refresh_token = extractTokenFromHeader(req.headers, 'refresh_token');
+          const access_token = await this.authService.refreshToken(refresh_token);
           return res.status(200).cookie(
-            'acess_token',
-            acess_token, {
+            'access_token',
+            access_token, {
             sameSite: "strict",
             httpOnly: true,
             maxAge: env.ACCESS_EXPIRE as number,
@@ -60,7 +60,7 @@ export class AuthController{
       logout =  (req: Request, res: Response, next: NextFunction) => {
         try {
           this.authService.logout();
-          return res.clearCookie('acess_token').clearCookie('refresh_token').status(200).json({message: "Logged out successfully"})
+          return res.clearCookie('access_token').clearCookie('refresh_token').status(200).json({message: "Logged out successfully"})
         } catch (error) {
           return next(ErrorEnum.INTERNAL_SERVER_ERROR)
         }
