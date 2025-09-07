@@ -8,6 +8,7 @@ import { env } from "@shared/env";
 import jwt from "jsonwebtoken"
 import { Email } from "@core/abstractions/email";
 import { MailOptions } from "@lib/types";
+import {resetPasswordTemplate,welcomeTemplate} from "./email/template";
 
 export class AuthService{
   constructor(
@@ -22,6 +23,12 @@ export class AuthService{
     }
     createUserDTO.password = await hashPassword(createUserDTO.password);
     const user = await  this.authRepository.create(createUserDTO);
+    await this.emailService.send({
+      to: user.email,
+      subject: "Welcome to Payment Records",
+      from: process.env.EMAIL_USER,
+      html: welcomeTemplate(user.name)
+    })
     return user;
   }
 
@@ -93,14 +100,13 @@ export class AuthService{
     );
 
     try {
-      // TODO: Implement email with link to frontend page to reset password
     await this.emailService.send({
       to: user.email,
       subject: "Password Reset",
       from: process.env.EMAIL_USER,
-      text: `You requested a password reset. Use the following token to reset your password: ${resetToken}`,
-      html: `<p>You requested a password reset. Use the following token to reset your password:</p><p><b>${resetToken}</b></p>`
+      html: resetPasswordTemplate(resetToken, user.name)
     })
+
       return {message: "Password reset email sent"}
     } catch (error) {
       console.log(error)
@@ -122,7 +128,5 @@ export class AuthService{
     await this.authRepository.updateUser(userId, {password: hashedPassword});
     return {message: "Password updated successfully"}
   }
-
-
 
 }
