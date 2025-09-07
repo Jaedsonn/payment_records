@@ -9,10 +9,10 @@ export const comparePasswords = async (password: string, hash: string): Promise<
   return bcrypt.compare(password, hash);
 };
 
-export const extractTokenFromHeader = (headers: any) => {
+export const extractTokenFromHeader = (headers: any, tokenType: 'access_token' | 'refresh_token') => {
   const cookies = headers?.cookie;
 
-  const config = cookies.split(';').filter((cookie: string) => cookie.trim().startsWith('refresh_token='))[0].split('=')[1];
+  const config = cookies.split(';').filter((cookie: string) => cookie.trim().startsWith(`${tokenType}=`))[0].split('=')[1];
 
   if(!config) return '';
 
