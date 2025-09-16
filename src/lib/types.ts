@@ -6,3 +6,8 @@ export type ErrorType = {
 }
 
 export type MailOptions = nodemailer.SendMailOptions;
+
+export type AccessPayload = {
+  email: string
+  id: string
+}
