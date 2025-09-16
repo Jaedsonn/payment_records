@@ -1,3 +1,4 @@
+import { Bank } from "@modules/Bank/entity/bank.entity";
 import { User } from "@modules/User/entity/user.entity"
 import { AppDataSource } from "@shared/data-source";
 import { Repository } from "typeorm";
@@ -7,6 +8,7 @@ interface IUserRepository<T> {
   findById(id: string): Promise<T | null>;
   updateUser(id: string, data: Partial<T>): Promise<T>;
   deleteUser(id: string): Promise<void>;
+  getAllBanks(id: string): Promise<Bank[]>;
 }
 
 export class UserRepository implements IUserRepository<User> {
@@ -29,5 +31,10 @@ export class UserRepository implements IUserRepository<User> {
 
   async deleteUser(id: string): Promise<void> {
     return await this.userRepository.delete(id).then(() => {});
+  }
+
+  async getAllBanks(id: string): Promise<Bank[]> {
+    const user = await this.userRepository.findOne({where: {id}, relations: {banks: true}});
+    return user?.banks || [];
   }
 }

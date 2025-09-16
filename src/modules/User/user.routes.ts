@@ -15,3 +15,9 @@ UserRouter.get(
    validateToken,
    UserFactory.createUserController().getUserInfo
   );
+
+UserRouter.get(
+  "/most-used-banks",
+  validateToken,
+  UserFactory.createUserController().getMostUsedBanks
+)
