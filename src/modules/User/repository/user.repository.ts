@@ -20,7 +20,7 @@ export class UserRepository implements IUserRepository<User> {
   }
 
   async findById(id: string): Promise<User | null> {
-    return await this.userRepository.findOne({where: {id}});
+    return await this.userRepository.findOne({where: {id}, relations: {banks: true, transactions: true}});
   }
 
   async updateUser(id: string, data: Partial<User>): Promise<User> {
