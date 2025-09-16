@@ -22,4 +22,14 @@ export class UserController{
         next(ErrorEnum.INTERNAL_SERVER_ERROR);
     }
   }
+
+  getUserInfo  =  async (req: Request, res: Response, next: NextFunction) =>{
+    try {
+        const user = await this.userService.getUserInfo(req.data!.id);
+        if(!user) throw new Error(ErrorEnum.NOT_FOUND.message);
+        return res.status(200).json(user);
+    } catch (error) {
+      next(ErrorEnum.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

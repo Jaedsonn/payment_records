@@ -9,4 +9,8 @@ export class UserService{
   async updateUser(id: string, updateData: Partial<UpdateUserDto>){
     return this.userRepository.updateUser(id, updateData);
   }
+
+  async getUserInfo(id: string){
+    return this.userRepository.findById(id);
+  }
 }
