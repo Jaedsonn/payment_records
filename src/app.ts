@@ -1,10 +1,10 @@
 import express from 'express';
-import { AppDataSource } from './shared/data-source';
+import { AppDataSource } from './shared/db/data-source';
 import AuthRouter from '@modules/Auth/auth.routes';
 import "reflect-metadata"
 import ErrorHandler from "@middlewares/error";
 import { UserRouter } from '@modules/User/user.routes';
-
+import { BankRouter } from '@modules/Bank/bank.routes';
 
 process.loadEnvFile();
 
@@ -14,6 +14,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
+app.use("/bank", BankRouter);
 app.use(ErrorHandler.handle);
 
 AppDataSource.initialize()
