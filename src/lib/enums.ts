@@ -50,5 +50,6 @@ export const ErrorEnum = {
 	INVALID_CREDENTIALS: { message: "Invalid Credentials", status: 401 },
 	VALIDATION_ERROR: { message: "Validation Error", status: 400 },
 	INSUFFICIENT_FUNDS: { message: "Insufficient Funds", status: 400 },
-	ACCOUNT_BLOCKED: { message: "Account Blocked", status: 403 }
+	ACCOUNT_BLOCKED: { message: "Account Blocked", status: 403 },
+	MISSING_PROPERTIES: { message: "Missing Required Properties", status: 400 },
 } as const;
