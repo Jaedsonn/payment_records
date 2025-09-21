@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { AppDataSource } from "@shared/data-source";
+import { AppDataSource } from "@shared/db/data-source";
 import { Bank } from "../entity/bank.entity";
 
 interface IBankRepository<T>{
