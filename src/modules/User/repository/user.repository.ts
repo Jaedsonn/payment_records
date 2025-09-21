@@ -1,6 +1,6 @@
 import { Bank } from "@modules/Bank/entity/bank.entity";
 import { User } from "@modules/User/entity/user.entity"
-import { AppDataSource } from "@shared/data-source";
+import { AppDataSource } from "@shared/db/data-source";
 import { Repository } from "typeorm";
 
 interface IUserRepository<T> {
