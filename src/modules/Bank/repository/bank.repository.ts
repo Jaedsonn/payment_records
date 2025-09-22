@@ -8,6 +8,7 @@ interface IBankRepository<T>{
     createBank(data: Partial<T>): Promise<T>;
     updateBank(id: string, data: Partial<T>): Promise<T>;
     deleteBank(id: string): Promise<void>;
+    findAllBanks(): Promise<T[]>;
 }
 
 export class BankRepository implements IBankRepository<Bank>{
@@ -29,7 +30,10 @@ export class BankRepository implements IBankRepository<Bank>{
         return this.bankRepository.save({ ...data, id });
     }
     async deleteBank(id: string): Promise<void> {
-        return this.bankRepository.delete(id).then(() => {});
+        await this.bankRepository.delete(id);
     }
 
+    async findAllBanks(): Promise<Bank[]> {
+        return await this.bankRepository.find();
+    }
 }
