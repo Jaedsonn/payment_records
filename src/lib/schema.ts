@@ -5,6 +5,8 @@ export const CreateBankSchema = z.object({
     account: z.string().min(5).max(100)
 })
 
+export const UpdateBankSchema = CreateBankSchema.partial();
+
 export const CreateUserSchema = z.object({
     name: z.string().min(5).max(100),
     age: z.number().min(16).max(150),
