@@ -2,7 +2,7 @@ import * as typeorm from "typeorm"
 import { Bank } from '@modules/Bank/entity/bank.entity';
 import { User } from '@modules/User/entity/user.entity';
 import { Transaction } from '@modules/Transaction/entity/trasaction.entity';
-import { Account } from "@modules/Account/account.entity";
+import { Account } from "@modules/Account/entity/account.entity";
 
 process.loadEnvFile()
 
