@@ -7,7 +7,7 @@ import { validateToken } from "@middlewares/jwt";
 const BankRouter = Router();
 
 BankRouter.get("/info/:id", validateToken, BankFactory.createController().getBankInfoById);
-BankRouter.get("/info/name", validateToken, BankFactory.createController().getBankInfoByName);
+BankRouter.get("/info/:name", validateToken, BankFactory.createController().getBankInfoByName);
 BankRouter.post(
   "/register",
   validateToken,

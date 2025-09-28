@@ -27,11 +27,11 @@ export class BankController {
     next: NextFunction
   ) => {
     try {
-      const body = req.body;
+      const { name } = req.params;
 
-      if (!body.name) throw new Error(ErrorEnum.BAD_REQUEST.message);
+      if (!name) throw new Error(ErrorEnum.BAD_REQUEST.message);
 
-      const bankInfo = await this.bankService.getBankDetailsByName(body.name);
+      const bankInfo = await this.bankService.getBankDetailsByName(name);
       res.status(200).json({ bankInfo });
     } catch (error) {
       next(error);
