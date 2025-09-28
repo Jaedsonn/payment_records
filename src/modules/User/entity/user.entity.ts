@@ -1,6 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Bank} from "@modules/Bank/entity/bank.entity";
-import { Transaction } from "@modules/Transaction/entity/trasaction.entity";
+import { Account } from "@modules/Account/account.entity";
 
 @Entity('users')
 export class User{
@@ -19,13 +18,6 @@ export class User{
   @Column('int', {nullable: false})
   age: number;
   
-  @Column('decimal', {precision: 10, scale: 2, default: 0})
-  balance: number;
-
-  @OneToMany(() => Bank, (bank) => bank.user)
-  banks: Bank[];
-
-  @OneToMany(() => Transaction, (transaction) => transaction.user)
-  transactions: Transaction[];
-
+  @OneToMany(() => Account, (account) => account.user)
+  accounts: Account[];
 }

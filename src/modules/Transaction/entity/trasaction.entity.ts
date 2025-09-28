@@ -1,7 +1,6 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn, CreateDateColumn, UpdateDateColumn} from "typeorm";
-import { User } from "@modules/User/entity/user.entity";
-import { Bank } from "@modules/Bank/entity/bank.entity";
-import {TransactionType} from "@lib/enums";
+import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne} from "typeorm";
+import {TransactionCategory, TransactionType} from "@lib/enums";
+import { Account } from "@modules/Account/account.entity";
 
 @Entity('transactions')
 export class Transaction{
@@ -13,6 +12,9 @@ export class Transaction{
 
   @Column({ type: "enum", enum: TransactionType, nullable: false, default: TransactionType.TRANSFER })
   type: TransactionType;
+
+  @Column({type: "enum", enum: TransactionCategory, nullable: false, default: TransactionCategory.OTHER})
+  category: TransactionCategory;
 
   @Column('text', {nullable: true, default: null})
   description: string;
@@ -29,11 +31,6 @@ export class Transaction{
   @UpdateDateColumn({nullable: true, default: null})
   updatedAt: Date;
 
-  @ManyToOne(() => User, user => user.transactions)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @ManyToOne(() => Bank, bank => bank.transactions)
-  @JoinColumn({ name: 'bank_id' })
-  bank: Bank;
+  @ManyToOne(() => Account, (account) => account.transactions)
+  account: Account;
 }
