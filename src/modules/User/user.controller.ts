@@ -32,13 +32,4 @@ export class UserController{
       next(ErrorEnum.INTERNAL_SERVER_ERROR);
     }
   }
-
-  getMostUsedBanks = async (req: Request, res: Response, next: NextFunction) =>{
-    try {
-      const banks = await this.userService.getMostUsedBanks(req.data!.id);
-      return res.status(200).json(banks);
-    } catch (error) {
-      next(ErrorEnum.INTERNAL_SERVER_ERROR);
-    }
-  }
 }

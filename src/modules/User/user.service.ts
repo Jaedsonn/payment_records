@@ -7,8 +7,8 @@ export class UserService{
     private readonly userRepository: Repository<User>,
   ){}
 
-  async updateUser( updateData: Partial<UpdateUserDto>){
-    return this.userRepository.save(updateData);
+  async updateUser( id: string, updateData: Partial<UpdateUserDto>){
+    return this.userRepository.update(id, updateData);
   }
 
   async getUserInfo(id: string){
