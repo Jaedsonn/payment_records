@@ -1,4 +1,5 @@
 import z from "zod";
+import { Account as AccountType } from "@lib/enums"        
 
 export const CreateBankSchema = z.object({
     name: z.string().min(5).max(100),
@@ -29,3 +30,13 @@ export const ResetPasswordSchema = z.object({
     token: z.string().min(10),
     newPassword: z.string().min(8).max(100)
 })
+
+export const CreateAccountSchema = z.object({
+    name: z.string().min(5).max(100),
+    balance: z.number().default(0),
+    isActive: z.boolean().optional(),
+    accountNumber: z.number().min(3),
+    accountType: z.enum(AccountType),
+})
+
+export const UpdateAccountSchema = CreateAccountSchema.partial();
