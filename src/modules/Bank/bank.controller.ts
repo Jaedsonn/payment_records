@@ -65,10 +65,11 @@ export class BankController {
   public updateBank = async (req: Request, res: Response, next: NextFunction) =>{
     try {
       const body = req.body;
+      const id = req.data?.id;
 
-      if(!body.id) throw new Error(ErrorEnum.BAD_REQUEST.message);
+      if(!id) throw new Error(ErrorEnum.BAD_REQUEST.message);
 
-      const updatedBank = await this.bankService.updateBankDetails(body.id, body);
+      const updatedBank = await this.bankService.updateBankDetails(id, body);
       res.status(200).json({ updatedBank });
     } catch (error) {
       next(error);
