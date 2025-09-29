@@ -15,8 +15,8 @@ export class Account {
     @Column('boolean', {default: true})
     isActive: boolean;
 
-    @Column('varchar', {length: 20, unique: true, nullable: false})
-    accountNumber: string;
+    @Column('number', {unique: true, nullable: false})
+    accountNumber: number;
 
     @Column({ type: "enum", enum: AccountType, nullable: false })
     accountType: AccountType;
