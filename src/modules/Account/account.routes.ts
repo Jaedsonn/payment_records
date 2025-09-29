@@ -20,3 +20,9 @@ AccountRouter.put(
     validateToken,
     AccountFactory.createController().updateAccount
 )
+
+AccountRouter.delete(
+    "/delete/:id",
+    validateToken,
+    AccountFactory.createController().deleteAccount
+)

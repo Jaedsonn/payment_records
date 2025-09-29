@@ -34,4 +34,15 @@ export class AccountController{
         }
     }
 
+    async deleteAccount(req: Request, res: Response, next: NextFunction){
+        try {
+            const { id } = req.params;
+            if(!id) return next(new Error(ErrorEnum.INSUFFICIENT_FUNDS.message));
+            const result = await this.accountService.delete(id);
+            res.status(200).json(result);
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
