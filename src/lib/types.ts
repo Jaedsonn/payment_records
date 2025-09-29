@@ -11,3 +11,8 @@ export type AccessPayload = {
   email: string
   id: string
 }
+
+export type DefaultMessage = {
+  success: boolean;
+  message: string;
+}
