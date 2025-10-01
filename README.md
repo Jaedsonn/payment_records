@@ -15,12 +15,12 @@ This project is a backend API for tracking payments, managing user accounts, and
 - Password reset via email
 - Secure logout
 
-### 👤 User Management
+###  User Management
 - User profile update
 - User information retrieval
 - Most used banks analytics
 
-### 🏦 Bank & Transaction Management *(In Development)*
+###  Bank & Transaction Management *(In Development)*
 - User-bank relationship management
 - Transaction tracking and history
 - Bank usage analytics
