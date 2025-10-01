@@ -5,6 +5,7 @@ import "reflect-metadata"
 import ErrorHandler from "@middlewares/error";
 import { UserRouter } from '@modules/User/user.routes';
 import { BankRouter } from '@modules/Bank/bank.routes';
+import { AccountRouter } from "@modules/Account/account.routes";
 
 process.loadEnvFile();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
 app.use("/bank", BankRouter);
+app.use("/account", AccountRouter);
 app.use(ErrorHandler.handle);
 
 AppDataSource.initialize()
