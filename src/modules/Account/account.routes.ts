@@ -44,3 +44,9 @@ AccountRouter.get(
     validateToken,
     AccountFactory.createController().getAccountByAccountNumber
 )
+
+AccountRouter.delete(
+    "/delete/:id",
+    validateToken,
+    AccountFactory.createController().desactivateAccount
+)

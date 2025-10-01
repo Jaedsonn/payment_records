@@ -63,5 +63,18 @@ export default class AccountService{
         return account;
     }
 
+    async desactivateAccount(id: string): Promise<DefaultMessage>{
+        const account = await this.accountRepository.findOneBy({id});
+
+        if(!account) throw new Error(ErrorEnum.NOT_FOUND.message);
+        account.isActive = false;
+        await this.accountRepository.save(account);
+        return {
+            success: true,
+            message: "Account desactivated successfully"
+        };
+        
+    }
+
 
 }
