@@ -45,4 +45,16 @@ export class AccountController{
         }
     }
 
+    async getAccount(req: Request, res: Response, next: NextFunction){
+        try {
+            const {accountNumber} = req.params;
+            if(!accountNumber) return next(new Error(ErrorEnum.INSUFFICIENT_FUNDS.message));
+            const account = await this.accountService.findOne(Number(accountNumber));
+            if(!account) return next( new Error(ErrorEnum.NOT_FOUND.message) );
+            res.status(200).json({account})
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }

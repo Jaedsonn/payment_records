@@ -45,4 +45,11 @@ export default class AccountService{
         };
     }
 
+    async findOne(accountNumber: number): Promise<Account | null>{
+        const account = await this.accountRepository.findOneBy({accountNumber});
+        if(!account) return null;
+        return account;
+    }
+
+    
 }
