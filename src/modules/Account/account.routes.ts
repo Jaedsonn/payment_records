@@ -26,3 +26,21 @@ AccountRouter.delete(
     validateToken,
     AccountFactory.createController().deleteAccount
 )
+
+AccountRouter.get(
+    "/list",
+    validateToken,
+    AccountFactory.createController().listAccounts
+)
+
+AccountRouter.get(
+    "/details/:id",
+    validateToken,
+    AccountFactory.createController().getAccountById
+)
+
+AccountRouter.get(
+    "/details/:accountNumber",
+    validateToken,
+    AccountFactory.createController().getAccountByAccountNumber
+)

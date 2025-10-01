@@ -20,8 +20,8 @@ export default class AccountService{
         return this.accountRepository.save(account)
     }
 
-    async update(account: UpdateAccountDto): Promise<UpdateAccountDto>{
-        const exists = await  this.accountRepository.findOneBy({accountNumber: account.accountNumber});
+    async update(id: string, account: Account): Promise<UpdateAccountDto>{
+        const exists = await  this.accountRepository.findOneBy({id});
 
         if(!exists){
             throw new Error(ErrorEnum.NOT_FOUND.message)
@@ -45,11 +45,23 @@ export default class AccountService{
         };
     }
 
-    async findOne(accountNumber: number): Promise<Account | null>{
-        const account = await this.accountRepository.findOneBy({accountNumber});
+    async listUserAccounts(id: string): Promise<Account[]>{
+        return this.accountRepository.findBy({id});
+    }
+
+    async getAccountById(id: string): Promise<Account | null>{
+        const account = await this.accountRepository.findOneBy({id});
         if(!account) return null;
         return account;
     }
 
-    
+
+    async getAccountByAccountNumber(accountNumber: number): Promise<Account | null>{
+        const account = await this.accountRepository.findOneBy({accountNumber});
+
+        if(!account) return null;
+        return account;
+    }
+
+
 }
