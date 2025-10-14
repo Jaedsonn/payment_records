@@ -76,5 +76,15 @@ export default class AccountService{
         
     }
 
+    async getAccountBalance(id: string): Promise<DefaultMessage>{
+        const account = await this.accountRepository.findOne({where: {id}, select: ["balance"]});
+        if(!account) throw new Error(ErrorEnum.NOT_FOUND.message);
+        return {
+            success: true,
+            message: `Account balance is ${account.balance}`,
+            data: {balance: account.balance},
+        }
+    }
+
 
 }

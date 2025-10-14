@@ -50,3 +50,10 @@ AccountRouter.delete(
     validateToken,
     AccountFactory.createController().desactivateAccount
 )
+
+AccountRouter.get(
+    "/balance/:id",
+    validateToken,
+    AccountFactory.createController().getAccountBalance
+)
+
