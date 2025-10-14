@@ -6,11 +6,14 @@ import {
 } from "@lib/enums";
 
 export const CreateBankSchema = z.object({
-  name: z.string().min(5).max(100),
-  account: z.string().min(5).max(100),
+  name: z.string().min(3).max(100),
+  code: z.string().min(3).max(10),
 });
 
-export const UpdateBankSchema = CreateBankSchema.partial();
+export const UpdateBankSchema = z.object({
+  name: z.string().min(3).max(100).optional(),
+  code: z.string().min(3).max(10).optional(),
+});
 
 export const CreateUserSchema = z.object({
   name: z.string().min(5).max(100),
@@ -36,14 +39,23 @@ export const ResetPasswordSchema = z.object({
 });
 
 export const CreateAccountSchema = z.object({
-  name: z.string().min(5).max(100),
-  balance: z.number().default(0),
+  name: z.string().min(3).max(100),
+  accountNumber: z.string().min(5).max(20),
+  agency: z.string().min(3).max(10),
+  balance: z.number().default(0).optional(),
   isActive: z.boolean().optional(),
-  accountNumber: z.number().min(3),
-  accountType: z.enum(AccountType),
+  accountType: z.nativeEnum(AccountType),
+  bankId: z.string().uuid(),
 });
 
-export const UpdateAccountSchema = CreateAccountSchema.partial();
+export const UpdateAccountSchema = z.object({
+  name: z.string().min(3).max(100).optional(),
+  accountNumber: z.string().min(5).max(20).optional(),
+  agency: z.string().min(3).max(10).optional(),
+  balance: z.number().optional(),
+  isActive: z.boolean().optional(),
+  accountType: z.nativeEnum(AccountType).optional(),
+});
 
 export const CreateTransactionSchema = z.object({
   accountId: z.string().uuid(),
