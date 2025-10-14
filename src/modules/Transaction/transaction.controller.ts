@@ -71,8 +71,8 @@ export class TransactionController {
         message: "Transactions retrieved successfully",
         data: transactions,
       });
-    } catch (_error) {
-      return next(ErrorEnum.INTERNAL_SERVER_ERROR);
+    } catch (error) {
+      return next(error);
     }
   };
 
@@ -107,8 +107,8 @@ export class TransactionController {
         message: "Transaction retrieved successfully",
         data: transaction,
       });
-    } catch (_error) {
-      return next(ErrorEnum.INTERNAL_SERVER_ERROR);
+    } catch (error) {
+      return next(error);
     }
   };
 
@@ -209,8 +209,8 @@ export class TransactionController {
         message: "Transaction summary retrieved successfully",
         data: summary,
       });
-    } catch (_error) {
-      return next(ErrorEnum.INTERNAL_SERVER_ERROR);
+    } catch (error) {
+      return next(error);
     }
   };
 }
