@@ -1,35 +1,49 @@
 import { ErrorEnum } from "@lib/enums";
 import { UserService } from "./user.service";
 import { Request, NextFunction, Response } from "express";
+import type { DefaultMessage } from "@lib/types";
 
-export class UserController{
-  constructor(
-    private readonly userService: UserService
-  ){}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
-  updateUser = async (req: Request, res: Response, next: NextFunction) =>{
+  updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = req.body;
-        if(!data.id){
-          throw new Error(ErrorEnum.NOT_FOUND.message);
-        }
-        const user = await this.userService.updateUser(data?.id, data);
-        return res.status(200).json(user);
-    } catch (error) {
-        if(error instanceof Error && error.message === ErrorEnum.NOT_FOUND.message){
-          return next(ErrorEnum.NOT_FOUND);
-        }
-        next(ErrorEnum.INTERNAL_SERVER_ERROR);
-    }
-  }
+      const userId = req.data!.id;
+      const updateData = req.body;
 
-  getUserInfo  =  async (req: Request, res: Response, next: NextFunction) =>{
-    try {
-        const user = await this.userService.getUserInfo(req.data!.id);
-        if(!user) throw new Error(ErrorEnum.NOT_FOUND.message);
-        return res.status(200).json(user);
+      const user = await this.userService.updateUser(userId, updateData);
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "User updated successfully",
+        data: { user },
+      };
+
+      return res.status(200).json(response);
     } catch (error) {
-      next(ErrorEnum.INTERNAL_SERVER_ERROR);
+      next(error);
     }
-  }
+  };
+
+  getUserInfo = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.data!.id;
+
+      const user = await this.userService.getUserInfo(userId);
+
+      if (!user) {
+        throw new Error(ErrorEnum.NOT_FOUND.message);
+      }
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "User retrieved successfully",
+        data: { user },
+      };
+
+      return res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
