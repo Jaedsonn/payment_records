@@ -5,55 +5,53 @@ import { bodyParser } from "@middlewares/bodyparser";
 import { CreateAccountSchema, UpdateAccountSchema } from "@lib/schema";
 
 export const AccountRouter = Router();
-    
 
 AccountRouter.post(
-    "/create",
-    bodyParser(CreateAccountSchema),
-    validateToken,
-    AccountFactory.createController().createAccount
+  "/create",
+  bodyParser(CreateAccountSchema),
+  validateToken,
+  AccountFactory.createController().createAccount
 );
 
 AccountRouter.put(
-    "/update",
-    bodyParser(UpdateAccountSchema),
-    validateToken,
-    AccountFactory.createController().updateAccount
-)
+  "/update/:id",
+  bodyParser(UpdateAccountSchema),
+  validateToken,
+  AccountFactory.createController().updateAccount
+);
+
+AccountRouter.patch(
+  "/alive-or-dead/:id",
+  validateToken,
+  AccountFactory.createController().aliveOrDeadAccount
+);
 
 AccountRouter.delete(
-    "/delete/:id",
-    validateToken,
-    AccountFactory.createController().deleteAccount
-)
+  "/delete/:id",
+  validateToken,
+  AccountFactory.createController().deleteAccount
+);
 
 AccountRouter.get(
-    "/list",
-    validateToken,
-    AccountFactory.createController().listAccounts
-)
+  "/list",
+  validateToken,
+  AccountFactory.createController().listAccounts
+);
 
 AccountRouter.get(
-    "/details/:id",
-    validateToken,
-    AccountFactory.createController().getAccountById
-)
+  "/details/number/:accountNumber",
+  validateToken,
+  AccountFactory.createController().getAccountByAccountNumber
+);
 
 AccountRouter.get(
-    "/details/:accountNumber",
-    validateToken,
-    AccountFactory.createController().getAccountByAccountNumber
-)
-
-AccountRouter.delete(
-    "/alive-or-dead/:id",
-    validateToken,
-    AccountFactory.createController().aliveOrDeadAccount
-)
+  "/details/:id",
+  validateToken,
+  AccountFactory.createController().getAccountById
+);
 
 AccountRouter.get(
-    "/balance/:id",
-    validateToken,
-    AccountFactory.createController().getAccountBalance
-)
-
+  "/balance/:id",
+  validateToken,
+  AccountFactory.createController().getAccountBalance
+);

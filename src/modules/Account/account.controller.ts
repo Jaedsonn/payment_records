@@ -6,7 +6,7 @@ import type { DefaultMessage } from "@lib/types";
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  async createAccount(req: Request, res: Response, next: NextFunction) {
+   createAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.data!.id;
       const accountData = req.body;
@@ -25,7 +25,7 @@ export class AccountController {
     }
   }
 
-  async updateAccount(req: Request, res: Response, next: NextFunction) {
+   updateAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.data!.id;
       const { id } = req.params;
@@ -45,7 +45,7 @@ export class AccountController {
     }
   }
 
-  async deleteAccount(req: Request, res: Response, next: NextFunction) {
+   deleteAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.data!.id;
       const { id } = req.params;
@@ -57,7 +57,7 @@ export class AccountController {
     }
   }
 
-  async listAccounts(req: Request, res: Response, next: NextFunction) {
+   listAccounts = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.data!.id;
 
@@ -75,7 +75,7 @@ export class AccountController {
     }
   }
 
-  async getAccountById(req: Request, res: Response, next: NextFunction) {
+   getAccountById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.data!.id;
       const { id } = req.params;
@@ -98,11 +98,11 @@ export class AccountController {
     }
   }
 
-  async getAccountByAccountNumber(
+   getAccountByAccountNumber  = async(
     req: Request,
     res: Response,
     next: NextFunction
-  ) {
+  )  => {
     try {
       const userId = req.data!.id;
       const { accountNumber } = req.params;
@@ -128,7 +128,7 @@ export class AccountController {
     }
   }
 
-  async aliveOrDeadAccount(req: Request, res: Response, next: NextFunction) {
+   aliveOrDeadAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.data!.id;
       const { id } = req.params;
@@ -140,7 +140,7 @@ export class AccountController {
     }
   }
 
-  async getAccountBalance(req: Request, res: Response, next: NextFunction) {
+   getAccountBalance = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.data!.id;
       const { id } = req.params;
