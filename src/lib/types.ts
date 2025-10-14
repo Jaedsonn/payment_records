@@ -15,4 +15,5 @@ export type AccessPayload = {
 export type DefaultMessage = {
   success: boolean;
   message: string;
+  data?: unknown;
 }
