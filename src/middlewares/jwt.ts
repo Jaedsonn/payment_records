@@ -1,32 +1,45 @@
 import { Request, Response, NextFunction } from "express";
 import { extractTokenFromHeader } from "@lib/utils";
-import {env} from "@shared/env";
+import { env } from "@shared/env";
 import jwt from "jsonwebtoken";
 import { AccessPayload } from "@lib/types";
 
-declare global{
-  namespace Express{
-    interface Request{
+declare global {
+  namespace Express {
+    interface Request {
       data?: AccessPayload;
     }
   }
 }
 
 export function validateToken(req: Request, res: Response, next: NextFunction) {
-  const token = extractTokenFromHeader(req.headers, 'access_token');
+  let token = req.headers.authorization?.replace("Bearer ", "");
 
-  if(!token){
-    return res.status(401).json({message: "Unauthorized"});
+  if (!token) {
+    token = extractTokenFromHeader(req.headers, "access_token");
+  }
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized - Token não fornecido",
+    });
   }
   try {
-      const decoded = jwt.verify(token, env.ACCESS_SECRET);
+    const decoded = jwt.verify(token, env.ACCESS_SECRET);
 
-      if(!decoded) {
-        return res.status(401).json({message: "Unauthorized"});
-      }
-      req.data = decoded as AccessPayload;
-      next();
-  } catch (error) {
-    return res.status(401).json({message: "Unauthorized"});
+    if (!decoded) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - Token inválido",
+      });
+    }
+    req.data = decoded as AccessPayload;
+    next();
+  } catch {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized - Token expirado ou inválido",
+    });
   }
 }
