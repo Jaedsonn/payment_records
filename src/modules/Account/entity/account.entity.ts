@@ -1,32 +1,49 @@
 import { Bank } from "@modules/Bank/entity/bank.entity";
 import { User } from "@modules/User/entity/user.entity";
 import { Transaction } from "@modules/Transaction/entity/trasaction.entity";
-import { Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { Account as AccountType } from "@lib/enums";
 
-@Entity('accounts')
+@Entity("accounts")
 export class Account {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
-    @Column('decimal', {precision: 10, scale: 2, default: 0})
-    balance: number;
+  @Column("varchar", { length: 20, unique: true, nullable: false })
+  accountNumber: string;
 
-    @Column('boolean', {default: true})
-    isActive: boolean;
+  @Column("varchar", { length: 10, nullable: true })
+  agency: string;
 
-    @Column('number', {unique: true, nullable: false})
-    accountNumber: number;
+  @Column("decimal", { precision: 10, scale: 2, default: 0 })
+  balance: number;
 
-    @Column({ type: "enum", enum: AccountType, nullable: false })
-    accountType: AccountType;
+  @Column("boolean", { default: true })
+  isActive: boolean;
 
-    @ManyToOne(() => User, (user) => user.accounts)
-    user: User;
+  @Column({ type: "enum", enum: AccountType, nullable: false })
+  accountType: AccountType;
 
-    @ManyToOne(() => Bank, (bank) => bank.accounts)
-    bank: Bank;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @OneToMany(() => Transaction, (transaction) => transaction.account)
-    transactions: Transaction[];
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @ManyToOne(() => User, (user) => user.accounts)
+  user: User;
+
+  @ManyToOne(() => Bank, (bank) => bank.accounts)
+  bank: Bank;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.account)
+  transactions: Transaction[];
 }

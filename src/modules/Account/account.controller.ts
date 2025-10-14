@@ -1,104 +1,154 @@
-import AccountService  from "@modules/Account/account.service"
-import {Request, Response, NextFunction} from "express"
+import AccountService from "@modules/Account/account.service";
+import { Request, Response, NextFunction } from "express";
 import { ErrorEnum } from "@lib/enums";
+import type { DefaultMessage } from "@lib/types";
 
-export class AccountController{
+export class AccountController {
+  constructor(private readonly accountService: AccountService) {}
 
-    constructor(
-        private readonly accountService: AccountService
-    ){}
+  async createAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.data!.id;
+      const accountData = req.body;
 
-    async createAccount(req: Request, res: Response, next: NextFunction){
-        try{
-            const data = req.body;
-            if(!data) return next(new Error(ErrorEnum.INSUFFICIENT_FUNDS.message));
-            const account = await this.accountService.create(data);
-            res.status(201).json({account} )
-        }
-        catch(error){
-            console.debug(error)
-            next()
-        }
+      const account = await this.accountService.create(userId, accountData);
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Account created successfully",
+        data: { account },
+      };
+
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
     }
+  }
 
-    async updateAccount(req: Request, res: Response, next: NextFunction){
-        try {
-            const data = req.body;
-            const {id} = req.params;
-            if(!data || !id) return next(new Error(ErrorEnum.INSUFFICIENT_FUNDS.message));
+  async updateAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.data!.id;
+      const { id } = req.params;
+      const accountData = req.body;
 
-            const account = await this.accountService.update(id,data);
-            res.status(200).json({account} )
-        }
-        catch(error){
-            console.debug(error)
-            next()
-        }
+      const account = await this.accountService.update(id, userId, accountData);
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Account updated successfully",
+        data: { account },
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
     }
+  }
 
-    async deleteAccount(req: Request, res: Response, next: NextFunction){
-        try {
-            const { id } = req.params;
-            if(!id) return next(new Error(ErrorEnum.INSUFFICIENT_FUNDS.message));
-            const result = await this.accountService.delete(id);
-            res.status(200).json(result);
-        } catch (error) {
-            next(error)
-        }
-    } 
+  async deleteAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.data!.id;
+      const { id } = req.params;
 
-    async listAccounts(req: Request, res: Response, next: NextFunction){
-        try {
-            const accounts = await this.accountService.listUserAccounts(req.data!.id);
-            res.status(200).json({accounts})
-        } catch (error) {
-            next(error)
-        }
+      const result = await this.accountService.delete(id, userId);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
     }
+  }
 
+  async listAccounts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.data!.id;
 
-    async getAccountById(req: Request, res: Response, next: NextFunction){
-        try {
-            const { id } = req.params;
-            if(!id) throw new Error(ErrorEnum.INSUFFICIENT_FUNDS.message);
-            return this.accountService.getAccountById(id); 
-        } catch (error) {
-            next(error)
-        }
+      const accounts = await this.accountService.listUserAccounts(userId);
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Accounts retrieved successfully",
+        data: { accounts },
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
     }
+  }
 
-    async getAccountByAccountNumber(req: Request, res: Response, next: NextFunction){
-        try {
-            const {accountNumber} = req.params;
-            
-            if(!accountNumber) throw new Error(ErrorEnum.INSUFFICIENT_FUNDS.message);
+  async getAccountById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.data!.id;
+      const { id } = req.params;
 
-            return this.accountService.getAccountByAccountNumber(Number(accountNumber));
-        } catch (error) {
-            next(error)
-        }
+      const account = await this.accountService.getAccountById(id, userId);
+
+      if (!account) {
+        throw new Error(ErrorEnum.NOT_FOUND.message);
+      }
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Account retrieved successfully",
+        data: { account },
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
     }
+  }
 
-    async aliveOrDeadAccount(req: Request, res: Response, next: NextFunction){
-        try {
-            const { id } = req.params;
-            if(!id) throw new Error(ErrorEnum.INSUFFICIENT_FUNDS.message);
-            const result = await this.accountService.aliveOrDeadAccount(id);
-            res.status(200).json(result);
-        } catch (error) {
-            next(error)
-        }
-    }
+  async getAccountByAccountNumber(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const userId = req.data!.id;
+      const { accountNumber } = req.params;
 
-    async getAccountBalance(req: Request, res: Response, next: NextFunction){
-        try {
-            const {id} = req.params;
-            if(!id) throw new Error(ErrorEnum.INSUFFICIENT_FUNDS.message);
-            const result = await this.accountService.getAccountBalance(id);
-            res.status(200).json(result);
-        } catch (error) {
-            next(error)
-        }
+      const account = await this.accountService.getAccountByAccountNumber(
+        accountNumber,
+        userId
+      );
+
+      if (!account) {
+        throw new Error(ErrorEnum.NOT_FOUND.message);
+      }
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Account retrieved successfully",
+        data: { account },
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
     }
-    
+  }
+
+  async aliveOrDeadAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.data!.id;
+      const { id } = req.params;
+
+      const result = await this.accountService.aliveOrDeadAccount(id, userId);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getAccountBalance(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.data!.id;
+      const { id } = req.params;
+
+      const result = await this.accountService.getAccountBalance(id, userId);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
