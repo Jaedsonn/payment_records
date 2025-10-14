@@ -1,4 +1,11 @@
+import { IsString, IsOptional } from "class-validator";
 
-import { createBankDto } from './create-bank.dto';
+export class UpdateBankDto {
+  @IsString()
+  @IsOptional()
+  name?: string;
 
-export class UpdateBankDto implements Partial<createBankDto> {}
+  @IsString()
+  @IsOptional()
+  code?: string;
+}

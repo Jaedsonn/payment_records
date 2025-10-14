@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from "class-validator";
 
-export class createBankDto{
-    @IsString()
-    @IsNotEmpty()
-    name: string;
+export class CreateBankDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @IsString()
-    @IsNotEmpty()
-    account: string;
+  @IsString()
+  @IsNotEmpty()
+  code: string;
 }
