@@ -69,7 +69,7 @@ export class TransactionController {
       return res.status(200).json({
         success: true,
         message: "Transactions retrieved successfully",
-        data: transactions,
+        data: { transactions },
       });
     } catch (error) {
       return next(error);
@@ -207,7 +207,7 @@ export class TransactionController {
       return res.status(200).json({
         success: true,
         message: "Transaction summary retrieved successfully",
-        data: summary,
+        data: { summary },
       });
     } catch (error) {
       return next(error);

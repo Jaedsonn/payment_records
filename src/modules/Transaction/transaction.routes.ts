@@ -20,6 +20,12 @@ TransactionRouter.get(
 );
 
 TransactionRouter.get(
+  "/summary",
+  validateToken,
+  TransactionFactory.createController().getTransactionSummary
+);
+
+TransactionRouter.get(
   "/:id",
   validateToken,
   TransactionFactory.createController().getTransactionById
@@ -36,10 +42,4 @@ TransactionRouter.delete(
   "/:id",
   validateToken,
   TransactionFactory.createController().deleteTransaction
-);
-
-TransactionRouter.get(
-  "/summary",
-  validateToken,
-  TransactionFactory.createController().getTransactionSummary
 );
