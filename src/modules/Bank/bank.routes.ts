@@ -1,20 +1,42 @@
 import { Router } from "express";
 import { BankFactory } from "./bank.factory";
 import { bodyParser } from "@middlewares/bodyparser";
-import {CreateBankSchema, UpdateBankSchema } from "@lib/schema";
+import { CreateBankSchema, UpdateBankSchema } from "@lib/schema";
 import { validateToken } from "@middlewares/jwt";
 
 const BankRouter = Router();
 
-BankRouter.get("/info/:id", validateToken, BankFactory.createController().getBankInfoById);
-BankRouter.get("/info/:name", validateToken, BankFactory.createController().getBankInfoByName);
+BankRouter.get(
+  "/info/:id",
+  validateToken,
+  BankFactory.createController().getBankInfoById
+);
+BankRouter.get(
+  "/search",
+  validateToken,
+  BankFactory.createController().getBankInfoByName
+);
 BankRouter.post(
   "/register",
   validateToken,
   bodyParser(CreateBankSchema),
   BankFactory.createController().registerBank
 );
-BankRouter.get("/all", validateToken, BankFactory.createController().getAllBanks)
-BankRouter.put("/update/:id", validateToken, bodyParser(UpdateBankSchema), BankFactory.createController().updateBank)
+BankRouter.get(
+  "/all",
+  validateToken,
+  BankFactory.createController().getAllBanks
+);
+BankRouter.put(
+  "/update/:id",
+  validateToken,
+  bodyParser(UpdateBankSchema),
+  BankFactory.createController().updateBank
+);
+BankRouter.delete(
+  "/delete/:id",
+  validateToken,
+  BankFactory.createController().deleteBank
+);
 
 export { BankRouter };

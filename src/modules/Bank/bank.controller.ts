@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorEnum } from "@lib/enums";
 import { BankService } from "./bank.service";
+import type { DefaultMessage } from "@lib/types";
 
 export class BankController {
   constructor(private bankService: BankService) {}
@@ -12,10 +13,20 @@ export class BankController {
   ) => {
     try {
       const bankId = req.params.id;
-      if (!bankId) throw new Error(ErrorEnum.UNAUTHORIZED.message);
 
       const bankInfo = await this.bankService.getBankDetailsById(bankId);
-      res.status(200).json({ bankInfo });
+
+      if (!bankInfo) {
+        throw new Error(ErrorEnum.NOT_FOUND.message);
+      }
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Bank retrieved successfully",
+        data: { bank: bankInfo },
+      };
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -27,12 +38,25 @@ export class BankController {
     next: NextFunction
   ) => {
     try {
-      const { name } = req.params;
+      const name = req.query.name as string;
 
-      if (!name) throw new Error(ErrorEnum.BAD_REQUEST.message);
+      if (!name) {
+        throw new Error(ErrorEnum.BAD_REQUEST.message);
+      }
 
       const bankInfo = await this.bankService.getBankDetailsByName(name);
-      res.status(200).json({ bankInfo });
+
+      if (!bankInfo) {
+        throw new Error(ErrorEnum.NOT_FOUND.message);
+      }
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Bank retrieved successfully",
+        data: { bank: bankInfo },
+      };
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -44,47 +68,77 @@ export class BankController {
     next: NextFunction
   ) => {
     try {
-      const body = req.body;
-      if (!body.name) throw new Error(ErrorEnum.BAD_REQUEST.message);
-      const bankInfo = await this.bankService.registerBank({...body, user_id: req.data?.id});
-      res.status(201).json({ bankInfo });
+      const { name, code } = req.body;
+
+      const bank = await this.bankService.registerBank({ name, code });
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Bank registered successfully",
+        data: { bank },
+      };
+
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }
   };
 
-  public getAllBanks = async (req: Request, res: Response, next: NextFunction) => {
+  public getAllBanks = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const banks = await this.bankService.getAllBanks();
-      res.status(200).json({ banks });
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Banks retrieved successfully",
+        data: { banks },
+      };
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
   };
 
-  public updateBank = async (req: Request, res: Response, next: NextFunction) =>{
-    try {
-      const body = req.body;
-      const id = req.data?.id;
-
-      if(!id) throw new Error(ErrorEnum.BAD_REQUEST.message);
-
-      const updatedBank = await this.bankService.updateBankDetails(id, body);
-      res.status(200).json({ updatedBank });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  public deleteBank = async (req: Request, res: Response, next: NextFunction) => {
+  public updateBank = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const bankId = req.params.id;
-      if(!bankId) throw new Error(ErrorEnum.BAD_REQUEST.message);
+      const updateData = req.body;
 
-      await this.bankService.removeBank(bankId);
-      res.status(204).send();
+      const bank = await this.bankService.updateBankDetails(bankId, updateData);
+
+      const response: DefaultMessage = {
+        success: true,
+        message: "Bank updated successfully",
+        data: { bank },
+      };
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
-  }
+  };
+
+  public deleteBank = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const bankId = req.params.id;
+
+      const result = await this.bankService.removeBank(bankId);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

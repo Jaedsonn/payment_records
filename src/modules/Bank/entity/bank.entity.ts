@@ -1,16 +1,29 @@
-import {Column, Entity, OneToMany,  PrimaryGeneratedColumn, } from "typeorm";
-import { Account as AccountEntity  } from "@modules/Account/account.entity";
-import { Account } from "@lib/enums";
-@Entity('banks')
-export class Bank{
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { Account as AccountEntity } from "@modules/Account/entity/account.entity";
+
+@Entity("banks")
+export class Bank {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column('varchar', {length: 100, nullable: false})
+  @Column("varchar", { length: 100, nullable: false, unique: true })
   name: string;
 
-  @Column({ type: "enum", enum: Account, nullable: false })
-  accountType: Account;
+  @Column("varchar", { length: 10, nullable: true })
+  code: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @OneToMany(() => AccountEntity, (account) => account.bank)
   accounts: AccountEntity[];
