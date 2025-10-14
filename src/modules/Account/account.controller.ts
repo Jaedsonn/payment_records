@@ -79,11 +79,11 @@ export class AccountController{
         }
     }
 
-    async desactivateAccount(req: Request, res: Response, next: NextFunction){
+    async aliveOrDeadAccount(req: Request, res: Response, next: NextFunction){
         try {
             const { id } = req.params;
             if(!id) throw new Error(ErrorEnum.INSUFFICIENT_FUNDS.message);
-            const result = await this.accountService.desactivateAccount(id);
+            const result = await this.accountService.aliveOrDeadAccount(id);
             res.status(200).json(result);
         } catch (error) {
             next(error)

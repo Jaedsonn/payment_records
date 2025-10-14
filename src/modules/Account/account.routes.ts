@@ -46,9 +46,9 @@ AccountRouter.get(
 )
 
 AccountRouter.delete(
-    "/delete/:id",
+    "/alive-or-dead/:id",
     validateToken,
-    AccountFactory.createController().desactivateAccount
+    AccountFactory.createController().aliveOrDeadAccount
 )
 
 AccountRouter.get(
