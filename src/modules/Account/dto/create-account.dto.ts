@@ -1,20 +1,34 @@
-import {IsString,  IsNumber, IsBoolean, IsEnum} from "class-validator"
-import {Account as AccountType} from "@lib/enums"
-
+import {
+  IsString,
+  IsNumber,
+  IsBoolean,
+  IsEnum,
+  IsOptional,
+  IsUUID,
+} from "class-validator";
+import { Account as AccountType } from "@lib/enums";
 
 export class CreateAccountDto {
-    @IsString()
-    name: string
+  @IsString()
+  name: string;
 
-    @IsNumber()
-    balance: number
+  @IsString()
+  accountNumber: string;
 
-    @IsBoolean()
-    isActive?: boolean
+  @IsString()
+  agency: string;
 
-    @IsNumber()
-    accountNumber: number
+  @IsNumber()
+  @IsOptional()
+  balance?: number;
 
-    @IsEnum(AccountType)
-    accountType: AccountType
+  @IsBoolean()
+  @IsOptional()
+  isActive?: boolean;
+
+  @IsEnum(AccountType)
+  accountType: AccountType;
+
+  @IsUUID()
+  bankId: string;
 }
