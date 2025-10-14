@@ -7,12 +7,16 @@ import { UserRouter } from "@modules/User/user.routes";
 import { BankRouter } from "@modules/Bank/bank.routes";
 import { AccountRouter } from "@modules/Account/account.routes";
 import { TransactionRouter } from "@modules/Transaction/transaction.routes";
+import cors from "cors";
 
 process.loadEnvFile();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(
+  cors()
+);
 app.use(express.json());
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
