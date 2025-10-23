@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { AccessPayload } from "@lib/types";
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       data?: AccessPayload;

@@ -1,5 +1,5 @@
 export interface EmailTransporter{
-  sendEmail(mailOptions: any): any
+  sendEmail(mailOptions: unknown): unknown
 }
 
 export abstract class Email<T>{
@@ -7,5 +7,5 @@ export abstract class Email<T>{
     protected readonly transporter: EmailTransporter
   ){}
 
-  abstract send(mailOptions: T): any;
+  abstract send(mailOptions: T): unknown;
 }
