@@ -9,15 +9,14 @@ import { AccountRouter } from "@modules/Account/account.routes";
 import { TransactionRouter } from "@modules/Transaction/transaction.routes";
 import cors from "cors";
 import { runSeeds } from "@shared/seeds";
+import dotenv from "dotenv";
 
-process.loadEnvFile();
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(
-  cors()
-);
+app.use(cors());
 app.use(express.json());
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
@@ -28,7 +27,7 @@ app.use(ErrorHandler.handle);
 
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "OK" });
-})
+});
 
 AppDataSource.initialize()
   .then(() => {
