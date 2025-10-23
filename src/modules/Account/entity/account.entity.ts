@@ -17,6 +17,9 @@ export class Account {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
+  @Column("varchar", { length: 100, nullable: false })
+  name: string;
+
   @Column("varchar", { length: 20, unique: true, nullable: false })
   accountNumber: string;
 
