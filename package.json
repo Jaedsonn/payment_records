@@ -6,7 +6,7 @@
     "build": "tsc && tsc-alias",
     "dev": "tsx --watch ./src/app.ts",
     "lint": "eslint './src/**/*.ts'",
-    "start": "node --env-file=.env ./dist/app.js"
+    "start": "node ./dist/app.js"
   },
   "keywords": [],
   "author": "",
