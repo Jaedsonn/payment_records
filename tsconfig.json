@@ -6,6 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
@@ -24,9 +25,14 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
+    "noFallthroughCasesInSwitch": false
   },
-  "exclude": [
-      "eslint.config.mts"
+  "include": [
+    "src/**/*"
   ],
+  "exclude": [
+      "eslint.config.mts",
+      "node_modules",
+      "dist"
+  ]
 }
