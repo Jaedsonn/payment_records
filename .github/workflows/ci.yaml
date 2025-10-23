@@ -34,7 +34,7 @@ jobs:
         run: npm audit || echo "Security vulnerabilities found, but continuing..."
 
       - name: Cache node_modules
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: |
             **/node_modules
