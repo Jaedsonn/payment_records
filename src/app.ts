@@ -9,7 +9,7 @@ import { AccountRouter } from "@modules/Account/account.routes";
 import { TransactionRouter } from "@modules/Transaction/transaction.routes";
 import cors from "cors";
 import { runSeeds } from "@shared/seeds";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
