@@ -26,6 +26,10 @@ app.use("/account", AccountRouter);
 app.use("/transaction", TransactionRouter);
 app.use(ErrorHandler.handle);
 
+app.get("/health", (_req, res) => {
+  res.status(200).json({ status: "OK" });
+})
+
 AppDataSource.initialize()
   .then(() => {
     console.log("Data Source has been initialized!");
