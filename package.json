@@ -5,7 +5,7 @@
   "scripts": {
     "start": "tsx --watch ./src/app.ts",
     "build": "tsc --build",
-    "migration:generate": "ts-node --esm ./node_modules/typeorm/cli.js migration:generate -d ./src/database/data-source.ts ./src/database/migrations/$npm_config_name"
+    "lint": "eslint './src/**/*.ts'"
   },
   "keywords": [],
   "author": "",
