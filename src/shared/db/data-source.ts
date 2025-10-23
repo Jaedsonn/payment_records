@@ -1,10 +1,11 @@
-import * as typeorm from "typeorm"
-import { Bank } from '@modules/Bank/entity/bank.entity';
-import { User } from '@modules/User/entity/user.entity';
-import { Transaction } from '@modules/Transaction/entity/trasaction.entity';
+import * as typeorm from "typeorm";
+import { Bank } from "@modules/Bank/entity/bank.entity";
+import { User } from "@modules/User/entity/user.entity";
+import { Transaction } from "@modules/Transaction/entity/trasaction.entity";
 import { Account } from "@modules/Account/entity/account.entity";
+import * as dotenv from "dotenv";
 
-process.loadEnvFile()
+dotenv.config();
 
 export const AppDataSource = new typeorm.DataSource({
   type: "postgres",
@@ -18,4 +19,4 @@ export const AppDataSource = new typeorm.DataSource({
   entities: [User, Bank, Transaction, Account],
   subscribers: [],
   migrations: [],
-})
+});
