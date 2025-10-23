@@ -7,7 +7,6 @@ interface IErrorHandle{
 
 class ErrorHandler implements IErrorHandle {
     handle(err: ErrorType, req: Request, res: Response): void {
-    console.log(err);
     const { message, status } = err;
     res.status(status).json({ error: message });
   }

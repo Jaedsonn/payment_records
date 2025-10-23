@@ -8,6 +8,7 @@ import { BankRouter } from "@modules/Bank/bank.routes";
 import { AccountRouter } from "@modules/Account/account.routes";
 import { TransactionRouter } from "@modules/Transaction/transaction.routes";
 import cors from "cors";
+import { runSeeds } from "@shared/seeds";
 
 process.loadEnvFile();
 
@@ -28,8 +29,9 @@ app.use(ErrorHandler.handle);
 AppDataSource.initialize()
   .then(() => {
     console.log("Data Source has been initialized!");
-    app.listen(port, () => {
+    app.listen(port, async () => {
       console.log(`Server is running on port ${port}`);
+      await runSeeds();
     });
   })
   .catch((err) => {

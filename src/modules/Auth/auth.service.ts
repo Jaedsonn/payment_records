@@ -107,8 +107,7 @@ export class AuthService{
     })
 
       return {message: "Password reset email sent"}
-    } catch (error) {
-      console.log(error)
+    } catch {
       throw new Error(ErrorEnum.INTERNAL_SERVER_ERROR.message);
     }
   }
