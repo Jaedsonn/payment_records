@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorType } from "@lib/types";
 
-interface IErrorHandle{
-  handle: (err: ErrorType , req: Request, res: Response, next: NextFunction) => void;
-}
-
-class ErrorHandler implements IErrorHandle {
-    handle(err: ErrorType, req: Request, res: Response): void {
+class ErrorHandler {
+  handle(
+    err: ErrorType,
+    _req: Request,
+    res: Response,
+    //eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _next: NextFunction
+  ): void {
     const { message, status } = err;
     res.status(status).json({ error: message });
   }

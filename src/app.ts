@@ -23,7 +23,7 @@ app.use("/user", UserRouter);
 app.use("/bank", BankRouter);
 app.use("/account", AccountRouter);
 app.use("/transaction", TransactionRouter);
-app.use(ErrorHandler.handle);
+app.use(ErrorHandler.handle.bind(ErrorHandler));
 
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "OK" });
