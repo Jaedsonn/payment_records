@@ -1,49 +1,70 @@
-name: "CI pipeline"
+# GitHub Actions CI/CD Pipeline - Daniela Freitas Backend
+# Pipeline simples com apenas build para servir como base
+name: CI/CD Pipeline
+
 on:
   push:
     branches:
       - main
+      - staging
   pull_request:
     branches:
       - main
+      - staging
+
+env:
+  NODE_VERSION: "22"
 
 jobs:
-  build:
+  # Job de Security
+  security:
+    name: 🔒 Security Check
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci --audit false
+        run: npm ci --prefer-offline
 
-      - name: Lint code
-        run: npm run lint || echo "Lint check failed, but continuing..."
+      - name: Run security checks
+        run: |
+          echo "🔒 Running security checks..."
+          npm audit --audit-level=moderate
+          echo "✅ Security checks completed successfully!"
+
+  # Job de Build
+  build:
+    name: 🔨 Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
 
       - name: Build application
-        run: npm run build
-
-      - name: Run security audit
-        run: npm audit || echo "Security vulnerabilities found, but continuing..."
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            **/node_modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
+        run: |
+          echo "🔨 Building application..."
+          npm run build
+          echo "✅ Build completed successfully!"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build
+          name: dist
           path: dist/
+          retention-days: 1
