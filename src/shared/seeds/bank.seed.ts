@@ -96,6 +96,12 @@ export class BankSeed {
         description: "Sistema de Crédito Cooperativo",
         isActive: true,
       },
+      {
+        name: "Mercado Pago",
+        code: "848",
+        description: "Sistema de Crédito Cooperativo",
+        isActive: true,
+      },
     ];
 
     for(const bankData of banks){
