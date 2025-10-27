@@ -22,6 +22,7 @@ const envSchema = z.object(
     REFRESH_EXPIRE: z.string().or(z.number()),
     RESET_SECRET: z.string(),
     RESET_EXPIRE: z.string().or(z.number()),
+    FRONTEND_URL: z.url(),
   },
   { error: "Missing variables in env file" }
 );
