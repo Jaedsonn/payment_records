@@ -29,6 +29,7 @@ export class AuthService{
       from: process.env.EMAIL_USER,
       html: welcomeTemplate(user.name)
     })
+    console.debug("Mensagem enviada");
     return user;
   }
 
