@@ -19,13 +19,6 @@ export class AuthController {
 
       return res
         .status(200)
-        .json({
-          success: true,
-          message: "User registered successfully",
-          data: {
-            user: userData,
-          },
-        })
         .cookie("access_token", access_token,
           {
             sameSite: "strict",
@@ -39,7 +32,15 @@ export class AuthController {
             httpOnly: true,
             secure: true,
           }
-        );
+        )
+        .json({
+          success: true,
+          message: "User registered successfully",
+          data: {
+            user: userData,
+          },
+        });
+        
     } catch {
       return res.status(400).json({
         success: false,
@@ -63,6 +64,7 @@ export class AuthController {
         .cookie("refresh_token", refresh_token, {
           sameSite: "strict",
           secure: true,
+          httpOnly: true
         })
         .json({
           success: true,
