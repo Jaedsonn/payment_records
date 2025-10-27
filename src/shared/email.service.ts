@@ -24,6 +24,7 @@ class Nodemailer extends Email<MailOptions>{
   }
 
   send(mailOptions: nodemailer.SendMailOptions) {
+    console.debug("Enviando email para:", mailOptions.to);
     return this.transporter.sendEmail(mailOptions);
   }
 }
