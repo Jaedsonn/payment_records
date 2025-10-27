@@ -17,17 +17,29 @@ export class AuthController {
           password: userPassword,
         });
 
-      return res.status(200).json({
-        success: true,
-        message: "User registered successfully",
-        data: {
-          user: userData,
-          tokens: {
-            accessToken: access_token,
-            refreshToken: refresh_token,
+      return res
+        .status(200)
+        .json({
+          success: true,
+          message: "User registered successfully",
+          data: {
+            user: userData,
           },
-        },
-      });
+        })
+        .cookie("access_token", access_token,
+          {
+            sameSite: "strict",
+            httpOnly: true,
+            secure: true,
+          }
+        )
+        .cookie("refresh_token", refresh_token,
+          {
+            sameSite: "strict",
+            httpOnly: true,
+            secure: true,
+          }
+        );
     } catch {
       return res.status(400).json({
         success: false,
@@ -56,18 +68,14 @@ export class AuthController {
           success: true,
           message: "Login successful",
           data: {
-            user,
-            tokens: {
-              accessToken: access_token,
-              refreshToken: refresh_token,
-            },
+            user
           },
         });
     } catch {
       return res.status(401).json({
         success: false,
         message: ErrorEnum.INVALID_CREDENTIALS.message,
-      })
+      });
     }
   };
 
@@ -91,7 +99,7 @@ export class AuthController {
       return res.status(401).json({
         success: false,
         message: ErrorEnum.UNAUTHORIZED.message,
-      })
+      });
     }
   };
 
@@ -107,7 +115,7 @@ export class AuthController {
       return res.status(500).json({
         success: false,
         message: ErrorEnum.INTERNAL_SERVER_ERROR.message,
-      })
+      });
     }
   };
 
