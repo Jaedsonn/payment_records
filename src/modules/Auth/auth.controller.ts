@@ -21,7 +21,7 @@ export class AuthController {
         .status(200)
         .cookie("access_token", access_token,
           {
-            sameSite: "strict",
+            sameSite: "none",
             httpOnly: true,
             secure: true,
             partitioned: true
@@ -29,7 +29,7 @@ export class AuthController {
         )
         .cookie("refresh_token", refresh_token,
           {
-            sameSite: "strict",
+            sameSite: "none",
             httpOnly: true,
             secure: true,
             partitioned: true
@@ -59,13 +59,13 @@ export class AuthController {
       res
         .status(200)
         .cookie("access_token", access_token, {
-          sameSite: "strict",
+          sameSite: "none",
           httpOnly: true,
           secure: true,
           partitioned: true
         })
         .cookie("refresh_token", refresh_token, {
-          sameSite: "strict",
+          sameSite: "none",
           secure: true,
           httpOnly: true,
           partitioned: true
@@ -95,7 +95,7 @@ export class AuthController {
       return res
         .status(200)
         .cookie("access_token", access_token, {
-          sameSite: "strict",
+          sameSite: "none",
           httpOnly: true,
           maxAge: env.ACCESS_EXPIRE as number,
           secure: true,
