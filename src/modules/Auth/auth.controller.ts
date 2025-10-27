@@ -24,6 +24,7 @@ export class AuthController {
             sameSite: "strict",
             httpOnly: true,
             secure: true,
+            partitioned: true
           }
         )
         .cookie("refresh_token", refresh_token,
@@ -31,6 +32,7 @@ export class AuthController {
             sameSite: "strict",
             httpOnly: true,
             secure: true,
+            partitioned: true
           }
         )
         .json({
@@ -60,11 +62,13 @@ export class AuthController {
           sameSite: "strict",
           httpOnly: true,
           secure: true,
+          partitioned: true
         })
         .cookie("refresh_token", refresh_token, {
           sameSite: "strict",
           secure: true,
-          httpOnly: true
+          httpOnly: true,
+          partitioned: true
         })
         .json({
           success: true,
@@ -95,6 +99,7 @@ export class AuthController {
           httpOnly: true,
           maxAge: env.ACCESS_EXPIRE as number,
           secure: true,
+          partitioned: true
         })
         .json({ message: "Token refreshed" });
     } catch {
