@@ -1,10 +1,11 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from "@asteasolutions/zod-to-openapi";
 import { userRegistry } from "@modules/User/user.routes";
-
+import { transactionRegistry } from "@modules/Transaction/transaction.routes";
 
 const register = new OpenAPIRegistry([
-    userRegistry
-]);
+    userRegistry,
+    transactionRegistry
+  ]);
 
 const docs = new OpenApiGeneratorV3(register.definitions).generateDocument({
     openapi: "3.1.0",
