@@ -18,7 +18,7 @@ export class AuthController {
         });
 
       return res
-        .status(200)
+        .status(201)
         .cookie("access_token", access_token,
           {
             sameSite: "none",
