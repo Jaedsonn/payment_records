@@ -1,86 +1,63 @@
-import { bodyParser } from "../../middlewares/bodyparser";
-import { Request, Response } from "express";
-import { CreateAccountSchema } from "../../lib/schema";
-import { Account as accountEnum, ErrorEnum } from "../../lib/enums";
+import { CreateAccountSchema } from "@lib/schema";
+import { bodyParser } from "@middlewares/bodyparser";
 import { randomUUID } from "crypto";
+import { Request, Response } from "express";
+import { ErrorEnum } from "@lib/enums";
+import { Account as accountEnum } from "@lib/enums";
 import z from "zod";
-import { unknown } from "zod";
 
-describe("test bodyParser middleware", () => {
 
-    type schema = z.infer<typeof CreateAccountSchema>;
+describe("bodyParser Middleware", () => {
+    type AccountBody = z.infer<typeof CreateAccountSchema>;
 
-    const mockAccount: schema = {
+    const mockAccount: AccountBody = {
         accountNumber: "1234567890",
         agency: '00001',
         accountType: accountEnum.BUSINESS,
         bankId: randomUUID(),
         name: 'mock account',
         balance: 0
-    }
+    };
 
-    const mockRequest = {
-        body: mockAccount
-    }
+    let req: Partial<Request>;
+    let res: Partial<Response>;
+    let next: jest.Mock;
+    const mid = bodyParser(CreateAccountSchema);
+
+    beforeEach(() => {
+        req = { body: { ...mockAccount } };
+        
+        res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn().mockReturnThis(),
+        };
+
+        next = jest.fn();
+    });
 
 
     test("should call next if body is valid", () => {
-        const req = mockRequest as Request;
-        const res = {} as Response;
-
-        res.status = jest.fn().mockReturnValue(res);
-        res.json = jest.fn().mockReturnValue({});
-
-        const next = jest.fn();
-
-
-        const mid = bodyParser(CreateAccountSchema);
-        mid(req, res, next);
+        mid(req as Request, res as Response, next);
 
         expect(next).toHaveBeenCalled();
-    })
+        expect(res.status).not.toHaveBeenCalled();
+    });
 
-    test("should return if send a invalid attribute in body", () => {
-        const invalidRequest = {
-            body: {
-                ...mockAccount,
-                bankId: 123
-            }
-        }
+    test("should return 400 if an attribute has invalid type", () => {
+        req.body.bankId = 123;
 
-        const req = invalidRequest as Request;
-        const res = {} as unknown as Response
-
-        res.status = jest.fn().mockReturnValue(res);
-        res.json = jest.fn();
-
-        const next = jest.fn();
-
-        const mid2 = bodyParser(CreateAccountSchema);
-        mid2(req, res, next);
+        mid(req as Request, res as Response, next);
 
         expect(next).not.toHaveBeenCalled();
-    })
+        expect(res.status).toHaveBeenCalledWith(ErrorEnum.MISSING_PROPERTIES.status);
+    });
 
-    test("should return if is missing an attribute in body", () => {
-        const { bankId, ...mockAccountWithoutBankId } = mockAccount;
+    test("should return 400 if a required attribute is missing", () => {
+        delete req.body.bankId;
 
-        const invalidRequest = {
-            body: mockAccountWithoutBankId
-        }
-
-        const req = invalidRequest as Request;
-        const res = {
-        } as unknown as Response
-
-        res.status = jest.fn().mockReturnValue(res);
-        res.json = jest.fn();
-
-        const next = jest.fn();
-
-        const mid2 = bodyParser(CreateAccountSchema);
-        mid2(req, res, next);
+        mid(req as Request, res as Response, next);
 
         expect(next).not.toHaveBeenCalled();
-    })
-})
+        expect(res.status).toHaveBeenCalledWith(ErrorEnum.MISSING_PROPERTIES.status);
+    });
+});
