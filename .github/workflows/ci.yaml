@@ -74,7 +74,7 @@ jobs:
           name: build
 
       - name: Up docker services
-        run: docker-compose -f ./src/tests/integration/docker-compose.test.yaml up -d --build
+        run: docker compose -f ./src/tests/integration/docker-compose.test.yaml up -d --build
         env:
           DB_HOST: localhost
           DB_PORT: 5432
@@ -97,5 +97,5 @@ jobs:
 
       - name: Stop containers
         if: always()
-        run: docker-compose -f ./src/tests/integration/docker-compose.test.yaml down
+        run: docker compose -f ./src/tests/integration/docker-compose.test.yaml down
 
