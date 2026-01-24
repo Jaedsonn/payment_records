@@ -2,15 +2,15 @@ import { Email } from "@core/abstractions/email";
 import { AuthService } from "@modules/Auth/auth.service";
 import { User } from "@modules/User/entity/user.entity";
 import { TestAppDataSource as dataSource } from "./db";
-import { CreateUserDto } from "@modules/Auth/dto/create-user.dto";
 import { MailOptions } from "@lib/types";
 import nodemailer from "nodemailer";
+import { CreateUserDto } from "@modules/Auth/dto/create-user.dto";
 
 
 class MockEmailService extends Email<MailOptions> {
     constructor() {
         super({
-            sendEmail: async (options: MailOptions) => {
+            sendEmail: async () => {
                 return jest.fn();
             }
         });
@@ -23,7 +23,7 @@ class MockEmailService extends Email<MailOptions> {
 
 describe('Testing auth service and operation: register, login and token refresh', () => {
     let authService: AuthService;
-    let emailService: Email<any>;
+    let emailService: Email<MailOptions>;
 
     beforeAll(async () => {
         await dataSource.initialize();
@@ -77,6 +77,6 @@ describe('Testing auth service and operation: register, login and token refresh'
             password: 'strongPassword123'
         }
 
-        await expect(authService.register(user as any)).rejects.toThrow();
+        await expect(authService.register(user as CreateUserDto)).rejects.toThrow();
     })
 })

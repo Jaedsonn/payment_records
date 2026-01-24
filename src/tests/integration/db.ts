@@ -4,7 +4,6 @@ import { User } from "@modules/User/entity/user.entity";
 import { Transaction } from "@modules/Transaction/entity/trasaction.entity";
 import { Account } from "@modules/Account/entity/account.entity";
 import { env } from "@shared/env";
-import { runSeeds } from "@shared/seeds";
 import * as dotenv from "dotenv";
 
 dotenv.config();
