@@ -55,6 +55,24 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: payment_records
+      PORT: 3000
+      FRONTEND_URL: http://localhost:5173
+      SMTP_HOST: smtp.example.com
+      EMAIL_USER: email@gmail.com
+      EMAIL_PASS: your-email-password
+      ACCESS_SECRET: secret1
+      ACCESS_EXPIRE: 15m
+      REFRESH_SECRET: secret2
+      REFRESH_EXPIRE: 7d
+      RESET_SECRET: secret3
+      RESET_EXPIRE: 15m
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -75,23 +93,6 @@ jobs:
 
       - name: Up docker services
         run: docker compose up -d --build
-        env:
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_USERNAME: postgres
-          DB_PASSWORD: postgres
-          DB_DATABASE: payment_records
-          PORT: 3000
-          FRONTEND_URL: http://localhost:5173
-          SMTP_HOST: smtp.example.com
-          EMAIL_USER: email@gmail.com
-          EMAIL_PASS: your-email-password
-          ACCESS_SECRET: secret1
-          ACCESS_EXPIRE: 15m
-          REFRESH_SECRET: secret2
-          REFRESH_EXPIRE: 7d
-          RESET_SECRET: secret3
-          RESET_EXPIRE: 15m
 
       - name: Wait for Database
         run: |
