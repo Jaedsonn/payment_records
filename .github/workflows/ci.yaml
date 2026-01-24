@@ -84,7 +84,7 @@ jobs:
 
       - name: Wait for Database
         run: |
-          until docker exec $(docker ps -q --filter name=postgres) pg_isready -U postgres; do
+          until docker exec payment_records_test pg_isready; do
             echo "Waiting for database..."
             sleep 2
           done
