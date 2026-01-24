@@ -7,7 +7,8 @@
     "dev": "tsx --watch ./src/app.ts",
     "lint": "eslint './src/**/*.ts'",
     "start": "node ./dist/app.js",
-    "test": "npx jest"
+    "test:unit": "npx jest ./src/tests/unit --runInBand",
+    "test:integration": "npx jest ./src/tests/integration --runInBand"
   },
   "keywords": [],
   "author": "",
