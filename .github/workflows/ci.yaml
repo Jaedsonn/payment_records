@@ -96,7 +96,7 @@ jobs:
 
       - name: Wait for Database
         run: |
-          until docker exec payment_records_test pg_isready; do
+          until docker exec payment_records_db pg_isready; do
             echo "Waiting for database..."
             sleep 2
           done
