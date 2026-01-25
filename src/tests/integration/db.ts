@@ -12,7 +12,7 @@ export const TestAppDataSource = new typeorm.DataSource({
   type: "postgres",
   database: env.DB_DATABASE + "_test",
   host: env.DB_HOST,
-  port: 5433,
+  port: 5432,
   username: env.DB_USERNAME,
   password: env.DB_PASSWORD,
   synchronize: true,
