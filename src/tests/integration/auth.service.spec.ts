@@ -7,7 +7,7 @@ import nodemailer from "nodemailer";
 import { CreateUserDto } from "@modules/Auth/dto/create-user.dto";
 
 
-class MockEmailService extends Email<MailOptions> {
+export class MockEmailService extends Email<MailOptions> {
     constructor() {
         super({ sendEmail: async () => true });
     }
