@@ -47,7 +47,7 @@ export const ErrorEnum = {
 	CONFLICT: { message: "Conflict", status: 409 },
 	INTERNAL_SERVER_ERROR: { message: "Internal Server Error", status: 500 },
 	USER_ALREADY_EXISTS: { message: "User already exists", status: 409 },
-	INVALID_CREDENTIALS: { message: "Invalid Credentials", status: 401 },
+	INVALID_CREDENTIALS: { message: "Invalid credentials", status: 401 },
 	VALIDATION_ERROR: { message: "Validation Error", status: 400 },
 	INSUFFICIENT_FUNDS: { message: "Insufficient Funds", status: 400 },
 	ACCOUNT_BLOCKED: { message: "Account Blocked", status: 403 },

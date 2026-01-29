@@ -107,7 +107,6 @@ export class AuthService {
         html: resetPasswordTemplate(resetToken, user.name),
         messageId: resetToken
       })
-
       return { message: "Password reset email sent" }
     } catch {
       throw new Error(ErrorEnum.INTERNAL_SERVER_ERROR.message);
