@@ -3,7 +3,6 @@ import { AuthService } from "@modules/Auth/auth.service";
 import { User } from "@modules/User/entity/user.entity";
 import { TestAppDataSource as dataSource } from "./db";
 import { MailOptions } from "@lib/types";
-import nodemailer from "nodemailer";
 import { CreateUserDto } from "@modules/Auth/dto/create-user.dto";
 
 
