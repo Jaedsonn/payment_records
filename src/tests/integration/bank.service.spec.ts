@@ -44,7 +44,7 @@ describe('BankService', () => {
         });
 
         it('should return null when bank does not exist', async () => {
-            let mockUuid = '5428d368-ee42-4c86-a390-69623fb67770';
+            const mockUuid = '5428d368-ee42-4c86-a390-69623fb67770';
             const result = await bankService.getBankDetailsById(mockUuid);
 
             expect(result).toBeNull();
@@ -184,7 +184,7 @@ describe('BankService', () => {
         });
 
         it('should throw not found error when bank does not exist', async () => {
-            let mockUuid = '44d86002-2757-4237-9cb9-eca599d7532e'
+            const mockUuid = '44d86002-2757-4237-9cb9-eca599d7532e'
             await expect(
                 bankService.updateBankDetails(mockUuid, { name: 'Test' })
             ).rejects.toThrow(ErrorEnum.NOT_FOUND.message);
@@ -254,7 +254,7 @@ describe('BankService', () => {
         });
 
         it('should throw not found error when bank does not exist', async () => {
-            let mockUuid = 'a46400af-3d6e-4003-b7ed-0840eb3c941b'
+            const mockUuid = 'a46400af-3d6e-4003-b7ed-0840eb3c941b'
             await expect(bankService.removeBank(mockUuid)).rejects.toThrow(
                 ErrorEnum.NOT_FOUND.message
             );
