@@ -1,5 +1,9 @@
 import bcrypt from "bcryptjs";
 import { IncomingHttpHeaders } from "http";
+import { faker, simpleFaker } from "@faker-js/faker";
+import { CreateUserSchema, CreateAccountSchema, CreateBankSchema } from "./schema";
+import { Account as accountEnum } from "./enums";
+import z from 'zod';
 
 export const hashPassword = async (password: string): Promise<string> => {
   const salt = await bcrypt.genSalt(10);
@@ -33,3 +37,31 @@ export const extractTokenFromHeader = (
 
   return config;
 };
+
+export function generateRandomUser(): z.infer<typeof CreateUserSchema> {
+  return {
+    name: faker.person.fullName(),
+    age: faker.number.int({ min: 18, max: 80 }),
+    email: faker.internet.email(),
+    password: faker.internet.password()
+  };
+}
+
+export function generateRandomBank(): z.infer<typeof CreateBankSchema> {
+  return {
+    name: faker.company.name() + " Bank",
+    code: faker.number.int({ min: 1000, max: 9999 }).toString()
+  };
+}
+
+export function generateRandomAccount(bankId: string): z.infer<typeof CreateAccountSchema> {
+  return {
+    accountNumber: faker.finance.accountNumber({ length: 10 }),
+    agency: faker.number.int({ min: 1000, max: 9999 }).toString(),
+    accountType: faker.helpers.arrayElement([accountEnum.CHECKING, accountEnum.SAVINGS]),
+    name: faker.finance.accountName(),
+    bankId
+  };
+}
+
+export const getRandomFromArray = (length: number): number => Math.floor(Math.random() * length);

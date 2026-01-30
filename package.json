@@ -18,6 +18,7 @@
     "@asteasolutions/zod-to-openapi": "^8.4.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/faker": "^6.6.8",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.3.0",
     "@types/nodemailer": "^7.0.1",
@@ -41,7 +42,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.34.0",
-    "@faker-js/faker": "^10.0.0",
+    "@faker-js/faker": "^10.2.0",
     "@types/jest": "^30.0.0",
     "eslint": "^9.34.0",
     "globals": "^16.3.0",
