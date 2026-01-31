@@ -23,7 +23,7 @@ export class AuthService {
     }
     const password_digest = await hashPassword(createUserDTO.password);
     const user = await this.authRepository.save({...createUserDTO, password: password_digest });
-    await this.emailService.send({
+    this.emailService.send({
       to: user.email,
       subject: "Welcome to Payment Records",
       from: process.env.EMAIL_USER,
@@ -100,7 +100,7 @@ export class AuthService {
     );
 
     try {
-      await this.emailService.send({
+      this.emailService.send({
         to: user.email,
         subject: "Password Reset",
         from: process.env.EMAIL_USER,
