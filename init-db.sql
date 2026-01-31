@@ -1,0 +1,2 @@
+CREATE DATABASE payment_records;
+CREATE DATABASE payment_records_test;

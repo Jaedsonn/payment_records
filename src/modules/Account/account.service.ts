@@ -117,6 +117,9 @@ export default class AccountService {
     accountNumber: string,
     userId: string
   ): Promise<Account | null> {
+    if (!accountNumber || !userId) {
+      throw new Error(ErrorEnum.BAD_REQUEST.message);
+    }
     return this.accountRepository.findOne({
       where: { accountNumber, user: { id: userId } },
       relations: ["bank"],
@@ -150,19 +153,20 @@ export default class AccountService {
     accountId: string,
     userId: string
   ): Promise<DefaultMessage> {
-    const account = await this.accountRepository.findOne({
+    const account = await this.accountRepository.find({
       where: { id: accountId, user: { id: userId } },
       select: ["balance"],
     });
 
-    if (!account) {
+
+    if (!account || account.length === 0) {
       throw new Error(ErrorEnum.NOT_FOUND.message);
     }
 
     return {
       success: true,
       message: `Account balance retrieved successfully`,
-      data: { balance: account.balance },
+      data: { balance: account[0].balance },
     };
   }
 }
