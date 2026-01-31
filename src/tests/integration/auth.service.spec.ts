@@ -43,9 +43,7 @@ describe("Auth Service Integration Tests", () => {
     })
 
     afterAll(() => {
-        dataSource.destroy().then(() => {
-            ("Data source destroyed after auth service tests");
-        })
+        dataSource.destroy();
     })
 
     test('Register user', async () => {

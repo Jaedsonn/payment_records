@@ -5,7 +5,6 @@ import { Bank } from '@modules/Bank/entity/bank.entity';
 import { Repository } from 'typeorm';
 import { TestAppDataSource as dataSource } from './db';
 import { BankService } from '@modules/Bank/bank.service';
-import { UserService } from '@modules/User/user.service';
 import { generateRandomUser, generateRandomBank, generateRandomAccount, getRandomFromArray } from '../../lib/utils';
 import { AuthService } from '@modules/Auth/auth.service';
 import { MockEmailService } from './auth.service.spec';
@@ -16,60 +15,61 @@ import { simpleFaker } from '@faker-js/faker';
 
 describe('Test account serice', () => {
     let accountService: AccountService;
-    let userService: UserService;
     let bankService: BankService;
     let authService: AuthService;
     let emailService: Email<MailOptions>
-
+    
     let userRepository: Repository<User>;
     let bankRepository: Repository<Bank>;
     let accountRepository: Repository<Account>;
-
-    let users: Array<Partial<User>> = [];
-    let banks: Array<any> = [];
-    let accounts: Partial<Account>[] = [];
-
+    
+    const users: Array<Partial<User>> = [];
+    const banks: Array<Bank> = [];
+    const accounts: Array<Partial<Account>> = [];
+    
     beforeAll(async () => {
         await dataSource.initialize();
         emailService = new MockEmailService();
-
+        
         userRepository = dataSource.getRepository(User);
         bankRepository = dataSource.getRepository(Bank);
         accountRepository = dataSource.getRepository(Account);
-
+        
         authService = new AuthService(
             userRepository,
             emailService
         )
-
+        
         accountService = new AccountService(
             accountRepository,
             userRepository,
             bankRepository
         )
-
+        
         bankService = new BankService(
             bankRepository
-        )
-
-        userService = new UserService(
-            userRepository
         )
 
         let i = 4;
 
         while (i--) {
-            let user = generateRandomUser();
+            const user = generateRandomUser();
             users.push(user);
 
-            let bank = generateRandomBank();
-            banks.push(bank);
+            const bank = generateRandomBank();
+            banks.push(bank as Bank);
         }
         const processUsers = users.map(async (user) => await authService.register(user as CreateUserDto))
-        users = await Promise.all(processUsers);
+        users.map(async (_, index) => {
+            users[index] = await processUsers[index];
+        })
+        await Promise.all(processUsers);
 
-        const processBanks = banks.map(async (bank) => await bankService.registerBank(bank))
-        banks = await Promise.all(processBanks);
+        const processBanks = banks.map(async (bank) => await bankService.registerBank(bank));
+        banks.map(async (_, index) => {
+            banks[index] = await processBanks[index];
+        })
+        await Promise.all(processBanks);
     })
 
     afterAll(async () => {
@@ -191,9 +191,9 @@ describe('Test account serice', () => {
     describe('Retrieve accounts', () => {
         it('should list all accounts from a specific user', async () => {
             const account = accounts[0];
-            const userId = account.user?.id!;
+            const userId = account.user?.id;
 
-            const userAccounts = await accountService.listUserAccounts(userId);
+            const userAccounts = await accountService.listUserAccounts(userId!);
 
             expect(Array.isArray(userAccounts)).toBe(true);
             expect(userAccounts.length).toBeGreaterThan(0);
@@ -202,9 +202,9 @@ describe('Test account serice', () => {
 
         it('should get an account by ID', async () => {
             const account = accounts[0];
-            const userId = account.user?.id!;
+            const userId = account.user?.id;
 
-            const result = await accountService.getAccountById(account.id!, userId);
+            const result = await accountService.getAccountById(account.id!, userId!);
 
             expect(result).not.toBeNull();
             expect(result?.id).toBe(account.id);
@@ -223,8 +223,8 @@ describe('Test account serice', () => {
             const account = await accountService.create(user.id!, accountData);
             accounts.push(account);
 
-            const userId = account.user?.id!;
-            const result = await accountService.getAccountByAccountNumber(account.accountNumber!, userId);
+            const userId = account.user?.id;
+            const result = await accountService.getAccountByAccountNumber(account.accountNumber!, userId!);
 
             expect(result).not.toBeNull();
             
@@ -233,9 +233,9 @@ describe('Test account serice', () => {
 
         it('should return the correct balance of an account', async () => {
             const account = accounts[0];
-            const userId = account.user?.id!;
+            const userId = account.user?.id;
 
-            const response = await accountService.getAccountBalance(account.id!, userId);
+            const response = await accountService.getAccountBalance(account.id!, userId!);
 
             expect(response.success).toBe(true);
             expect(response.data).toHaveProperty('balance', account.balance);
@@ -251,14 +251,14 @@ describe('Test account serice', () => {
     describe('Account Status (Alive or Dead)', () => {
         it('should toggle account activation status', async () => {
             const account = accounts[0];
-            const userId = account.user?.id!;
+            const userId = account.user?.id;
             const initialStatus = account.isActive;
 
-            const response = await accountService.aliveOrDeadAccount(account.id!, userId);
+            const response = await accountService.aliveOrDeadAccount(account.id!, userId!);
 
             expect(response.success).toBe(true);
             
-            const updatedAccount = await accountService.getAccountById(account.id!, userId);
+            const updatedAccount = await accountService.getAccountById(account.id!, userId!);
             expect(updatedAccount?.isActive).toBe(!initialStatus);
         });
 
