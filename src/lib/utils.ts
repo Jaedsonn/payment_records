@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { IncomingHttpHeaders } from "http";
-import { faker, simpleFaker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker"; // search for an alternative with ESM support
 import { CreateUserSchema, CreateAccountSchema, CreateBankSchema } from "./schema";
 import { Account as accountEnum } from "./enums";
 import z from 'zod';

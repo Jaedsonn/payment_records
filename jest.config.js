@@ -1,15 +1,17 @@
-const { createDefaultPreset } = require("ts-jest");
-const { compilerOptions } = require("./tsconfig.json")
 const { pathsToModuleNameMapper } = require("ts-jest");
-
-
-const tsJestTransformCfg = createDefaultPreset().transform;
+const { compilerOptions } = require("./tsconfig.json");
 
 /** @type {import("jest").Config} **/
 module.exports = {
   testEnvironment: "node",
+  preset: "ts-jest",
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>/src" }),
+  
+  transformIgnorePatterns: [
+    "node_modules/(?!@faker-js/faker)"
+  ],
+  
   transform: {
-    ...tsJestTransformCfg,
+    "^.+\\.(t|j)sx?$": ["ts-jest", { useESM: true }],
   },
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>/src/" })
 };

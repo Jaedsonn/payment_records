@@ -44,7 +44,7 @@ describe("Auth Service Integration Tests", () => {
 
     afterAll(() => {
         dataSource.destroy().then(() => {
-            console.log("Data source destroyed after auth service tests");
+            ("Data source destroyed after auth service tests");
         })
     })
 

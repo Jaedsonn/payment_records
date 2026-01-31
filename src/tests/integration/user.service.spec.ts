@@ -29,7 +29,6 @@ describe("UserService Integration Tests", () => {
 
     afterAll(() => {
         dataSource.destroy().then(() => {
-            console.log("Data source destroyed after user service tests");
         })
     })
 
