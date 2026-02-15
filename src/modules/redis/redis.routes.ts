@@ -14,7 +14,7 @@ redisRouter.get("/", validateToken, async (req: Request, res: Response) => {
     if(role !== RoleEnum.ADMIN) return res.status(403).json({message: "Forbidden - Admins only"});
 
    const data = await RedisFactory.createController().getAll();
-   return res.json({data});
+   return res.status(200).json({data});
 })
 
 redisRouter.get("/:key", validateToken, async (req: Request, res: Response) => {
@@ -24,5 +24,5 @@ redisRouter.get("/:key", validateToken, async (req: Request, res: Response) => {
 
     const data = await RedisFactory.createController().get(key);
     if(!data) return res.status(404).json({message: "Key not found"});
-    return res.json({data});
+    return res.status(200).json({data});
 })

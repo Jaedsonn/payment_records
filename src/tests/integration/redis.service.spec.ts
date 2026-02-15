@@ -1,11 +1,26 @@
 import { RedisService } from "@modules/redis/redis.service";
 import { Request } from "express";
+import { createClient } from "redis";
+import { redisClient as Client } from "@modules/redis/redis.config";
 
 describe("RedisService Integration Tests", () => {
     let redisService: RedisService;
+    let client: typeof Client;
 
     beforeAll(async () => {
-        redisService = new RedisService();
+        client = createClient({
+            url: "redis://localhost:6379"
+        });
+
+        client.on("error", (err) => console.error("Redis Client Error", err));
+
+        await client.connect();
+
+        redisService = new RedisService(client);
+    })
+
+    afterAll(async () => {
+        await client.quit();
     })
 
     test("Store and Retrieve Data", async () => {

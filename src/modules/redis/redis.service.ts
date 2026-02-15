@@ -1,8 +1,7 @@
-import { redisClient } from "./redis.config";
+import { redisClient as CreateClient } from "./redis.config";
 import { Logger } from "@core/interfaces/logger";
-
 export class RedisService implements Logger{
-    private client = redisClient
+    constructor(private readonly client:typeof CreateClient){}
 
     store(key: string, value: object){
         return this.client.set(key, JSON.stringify(value))
