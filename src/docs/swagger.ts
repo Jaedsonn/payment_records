@@ -4,13 +4,15 @@ import { transactionRegistry } from "@modules/Transaction/transaction.routes";
 import { bankRegister } from "@modules/Bank/bank.routes";
 import { authRegistry } from "@modules/Auth/auth.routes";
 import { accountRegistry } from "@modules/Account/account.routes";
+import {  redisRegistry } from "@modules/redis/redis.routes";
 
 const register = new OpenAPIRegistry([
     userRegistry,
     transactionRegistry,
     bankRegister,
     authRegistry,
-    accountRegistry
+    accountRegistry,
+    redisRegistry
   ]);
 
 const docs = new OpenApiGeneratorV3(register.definitions).generateDocument({
