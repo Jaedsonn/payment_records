@@ -72,6 +72,7 @@ jobs:
       REFRESH_EXPIRE: 7d
       RESET_SECRET: secret3
       RESET_EXPIRE: 15m
+      REDIS_URL: redis://localhost:6379
 
     steps:
       - name: Checkout repository
