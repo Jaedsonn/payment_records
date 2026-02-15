@@ -1,4 +1,4 @@
 export interface Logger{
-    store(key: string, value: Object): void;
-    get(key: string): Object | null;
+    store(key: string, value: object): void;
+    get(key: string): object | null;
 }

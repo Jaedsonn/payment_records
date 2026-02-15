@@ -4,7 +4,7 @@ import { Logger } from "@core/interfaces/logger";
 export class RedisService implements Logger{
     private client = redisClient
 
-    store(key: string, value: Object){
+    store(key: string, value: object){
         this.client.set(key, JSON.stringify(value))
     }
 
