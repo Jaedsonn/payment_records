@@ -53,3 +53,8 @@ export const ErrorEnum = {
 	ACCOUNT_BLOCKED: { message: "Account Blocked", status: 403 },
 	MISSING_PROPERTIES: { message: "Missing Required Properties", status: 400 },
 } as const;
+
+export enum Role{
+	USER,
+	ADMIN
+}

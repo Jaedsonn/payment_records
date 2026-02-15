@@ -7,12 +7,15 @@ import { UserRouter } from "@modules/User/user.routes";
 import { BankRouter } from "@modules/Bank/bank.routes";
 import { AccountRouter } from "@modules/Account/account.routes";
 import { TransactionRouter } from "@modules/Transaction/transaction.routes";
+import { redisRouter } from "@modules/redis/redis.routes";
+import { loggerMiddleware } from "@middlewares/loggger.middleware";
 import cors from "cors";
 import { runSeeds } from "@shared/seeds";
 import { env } from "@shared/env";
 import swaggerUi from "swagger-ui-express"
 import docs from "docs/swagger";
 import * as dotenv from "dotenv";
+import { redisClient } from "@modules/redis/redis.config";
 
 dotenv.config();
 
@@ -31,12 +34,14 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(loggerMiddleware);
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
 app.use("/bank", BankRouter);
 app.use("/account", AccountRouter);
 app.use("/transaction", TransactionRouter);
 app.use("/api", swaggerUi.serve, swaggerUi.setup(docs));
+app.use("/redis", redisRouter);
 app.use(ErrorHandler.handle.bind(ErrorHandler));
 
 app.get("/health", (_req, res) => {
@@ -46,9 +51,11 @@ app.get("/health", (_req, res) => {
 
 AppDataSource.initialize()
   .then(() => {
-    app.listen(port, async () => {
-      await runSeeds();
-    });
+    redisClient.connect().then(() => {
+      app.listen(port, async () => {
+        await runSeeds();
+      });
+    })
   })
   .catch((err) => {
     console.error("Error during Data Source initialization", err);

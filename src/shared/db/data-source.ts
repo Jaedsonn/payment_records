@@ -16,7 +16,7 @@ export const AppDataSource = new typeorm.DataSource({
   username: env.DB_USERNAME,
   password: env.DB_PASSWORD,
   synchronize: true,
-  logging: true,
+  logging: false,
   entities: [User, Bank, Transaction, Account],
   subscribers: [],
   migrations: [],
