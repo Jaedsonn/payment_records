@@ -1,7 +1,7 @@
 import { Email } from "@core/abstractions/email";
 import { AuthService } from "@modules/Auth/auth.service";
 import { User } from "@modules/User/entity/user.entity";
-import { TestAppDataSource as dataSource } from "./db";
+import { TestAppDataSource as dataSource } from "./postgres-db";
 import { MailOptions } from "@lib/types";
 import { CreateUserDto } from "@modules/Auth/dto/create-user.dto";
 

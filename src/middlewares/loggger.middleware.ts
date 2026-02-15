@@ -10,19 +10,6 @@ export function loggerMiddleware(req: Request, res: Response, next: NextFunction
     redisService.store(timestamp, {
         method,
         url,
-    
-        params,
-        query,
-        host,
-        hostname,
-        httpVersion,
-        ip
-    })
-
-    console.log({
-        method,
-        url,
-    
         params,
         query,
         host,

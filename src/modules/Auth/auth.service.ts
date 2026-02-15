@@ -17,9 +17,7 @@ export class AuthService {
   ) { }
 
   async register(createUserDTO: CreateUserDto): Promise<User> {
-    console.debug("Verificando se usuário existe com email:", createUserDTO.email);
     const isAlreadyRegistered = await this.authRepository.findOne({ where: { email: createUserDTO.email } });
-    console.debug("Resultado da busca:", isAlreadyRegistered);
     
     if (isAlreadyRegistered) {
       console.error("Usuário já existe:", isAlreadyRegistered);
@@ -34,7 +32,6 @@ export class AuthService {
       from: process.env.EMAIL_USER,
       html: welcomeTemplate(user.name)
     })
-    console.debug("Mensagem enviada");
     return user;
   }
 

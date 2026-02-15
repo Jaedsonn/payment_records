@@ -3,7 +3,7 @@ import { Account } from '@modules/Account/entity/account.entity';
 import { User } from '@modules/User/entity/user.entity';
 import { Bank } from '@modules/Bank/entity/bank.entity';
 import { Repository } from 'typeorm';
-import { TestAppDataSource as dataSource } from './db';
+import { TestAppDataSource as dataSource } from './postgres-db';
 import { BankService } from '@modules/Bank/bank.service';
 import { generateRandomUser, generateRandomBank, generateRandomAccount, getRandomFromArray } from '../../lib/utils';
 import { AuthService } from '@modules/Auth/auth.service';

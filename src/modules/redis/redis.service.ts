@@ -5,7 +5,7 @@ export class RedisService implements Logger{
     private client = redisClient
 
     store(key: string, value: object){
-        this.client.set(key, JSON.stringify(value))
+        return this.client.set(key, JSON.stringify(value))
     }
 
     async get(key: string){
