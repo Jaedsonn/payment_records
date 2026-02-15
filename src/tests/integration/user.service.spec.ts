@@ -1,6 +1,6 @@
 import { UserService } from "@modules/User/user.service";
 import { AuthService } from "@modules/Auth/auth.service";
-import { TestAppDataSource as dataSource} from "./db"
+import { TestAppDataSource as dataSource} from "./postgres-db";
 import { User } from "@modules/User/entity/user.entity";
 import { MockEmailService } from "./auth.service.spec";
 

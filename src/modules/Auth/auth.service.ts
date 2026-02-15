@@ -18,18 +18,20 @@ export class AuthService {
 
   async register(createUserDTO: CreateUserDto): Promise<User> {
     const isAlreadyRegistered = await this.authRepository.findOne({ where: { email: createUserDTO.email } });
+    
     if (isAlreadyRegistered) {
+      console.error("Usuário já existe:", isAlreadyRegistered);
       throw new Error(ErrorEnum.USER_ALREADY_EXISTS.message);
     }
+    
     const password_digest = await hashPassword(createUserDTO.password);
     const user = await this.authRepository.save({...createUserDTO, password: password_digest });
-    await this.emailService.send({
+    this.emailService.send({
       to: user.email,
       subject: "Welcome to Payment Records",
       from: process.env.EMAIL_USER,
       html: welcomeTemplate(user.name)
     })
-    console.debug("Mensagem enviada");
     return user;
   }
 
@@ -47,12 +49,13 @@ export class AuthService {
     const access_token = jwt.sign(
       {
         email: user.email,
-        id: user.id
+        sub: user.id,
+        role: user.role
       }, env.ACCESS_SECRET,
       { expiresIn: env.ACCESS_EXPIRE as number })
 
     const refresh_token = jwt.sign({
-      id: user.id
+      sub: user.id
     }, env.REFRESH_SECRET,
       {
         expiresIn: env.REFRESH_EXPIRE as number
@@ -100,7 +103,7 @@ export class AuthService {
     );
 
     try {
-      await this.emailService.send({
+      this.emailService.send({
         to: user.email,
         subject: "Password Reset",
         from: process.env.EMAIL_USER,

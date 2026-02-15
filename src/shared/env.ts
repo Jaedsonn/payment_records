@@ -23,6 +23,8 @@ const envSchema = z.object(
     RESET_SECRET: z.string(),
     RESET_EXPIRE: z.string().or(z.number()),
     FRONTEND_URL: z.url(),
+
+    REDIS_URL: z.string()
   },
   { error: "Missing variables in env file" }
 );

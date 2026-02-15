@@ -2,7 +2,7 @@ import { BankService } from '@modules/Bank/bank.service';
 import { Bank } from '@modules/Bank/entity/bank.entity';
 import { Repository } from 'typeorm';
 import { ErrorEnum } from '@lib/enums';
-import { TestAppDataSource as dataSource } from './db';
+import { TestAppDataSource as dataSource } from './postgres-db';
 
 describe('BankService', () => {
     let bankService: BankService;

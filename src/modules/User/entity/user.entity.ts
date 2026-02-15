@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Account } from "@modules/Account/entity/account.entity";
+import { Role as RoleEnum } from "@lib/enums";
 
 @Entity("users")
 export class User {
@@ -17,6 +18,9 @@ export class User {
 
   @Column("int", { nullable: false })
   age: number;
+
+  @Column("enum", {enum: RoleEnum, default: RoleEnum.USER})
+  role: RoleEnum;
 
   @OneToMany(() => Account, (account) => account.user)
   accounts: Account[];

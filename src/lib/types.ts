@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer"
+import { Role } from "./enums";
 
 /**
  * @swagger
@@ -34,6 +35,7 @@ export type MailOptions = nodemailer.SendMailOptions;
 export type AccessPayload = {
   email: string
   id: string
+  role: Role
 }
 
 /**
