@@ -1,6 +1,8 @@
 services:
   postgres:
     image: postgres:latest
+    networks:
+      - postgres-network
     container_name: payment_records_db
     ports:
       - "5432:5432"
@@ -14,8 +16,11 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+  
   redis:
     image: redis:latest
+    networks:
+      - redis-network
     container_name: payment_records_redis
     ports:
       - "6379:6379"
@@ -24,3 +29,45 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  app:
+    build: .
+    container_name: payment_records_app
+    networks:
+      - redis-network
+      - postgres-network
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: payment_records
+      PORT: 3000
+      FRONTEND_URL: https://nano-finance-4hr3cippj-jaedson-barbosa-macedos-projects.vercel.app
+
+      SMTP_HOST: smtp.gmail.com
+      EMAIL_USER: jaedsonnm@gmail.com
+      EMAIL_PASS: fsxd sxje ljpz qgda 
+
+      ACCESS_SECRET: secret1
+      ACCESS_EXPIRE: 15m
+      REFRESH_SECRET: secret2
+      REFRESH_EXPIRE: 7d
+      RESET_SECRET: secret3
+      RESET_EXPIRE: 15m
+
+      REDIS_URL: redis://redis:6379
+  
+networks:
+  redis-network:
+    driver: bridge
+  postgres-network:
+    driver: bridge
