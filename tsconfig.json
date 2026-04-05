@@ -19,7 +19,7 @@
       "@middlewares/*": ["middlewares/*"],
       "@core/*": ["core/*"]
     },
-    "incremental": true,
+    "incremental": false,
     "skipLibCheck": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,

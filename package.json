@@ -39,11 +39,11 @@
     "typeorm": "^0.3.26",
     "typeorm-extension": "^3.7.1",
     "typescript": "^5.9.2",
-    "zod": "^4.1.5"
+    "zod": "^4.1.5",
+    "@faker-js/faker": "^10.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.34.0",
-    "@faker-js/faker": "^10.2.0",
     "@types/jest": "^30.0.0",
     "eslint": "^9.34.0",
     "globals": "^16.3.0",

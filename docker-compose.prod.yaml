@@ -2,6 +2,8 @@ services:
   postgres:
     image: postgres:latest
     container_name: payment_records_db
+    networks:
+      - payment_records_network
     ports:
       - "5432:5432"
     healthcheck:
@@ -17,6 +19,8 @@ services:
   redis:
     image: redis:latest
     container_name: payment_records_redis
+    networks:
+      - payment_records_network
     ports:
       - "6379:6379"
     healthcheck:
@@ -24,3 +28,25 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  app:
+    build: .
+    container_name: payment_records_app
+    networks:
+      - payment_records_network
+    ports: 
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  
+networks:
+  payment_records_network:
+    driver: bridge

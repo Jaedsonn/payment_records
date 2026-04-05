@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: payment_records_db
+    networks:
+      - payment_records_network
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+  redis:
+    image: redis:latest
+    container_name: payment_records_redis
+    networks:
+      - payment_records_network
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  app:
+    build: .
+    container_name: payment_records_app
+    networks:
+      - payment_records_network
+    ports: 
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      DB_PORT: 5432
+      DB_HOST: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: payment_records
+      PORT: 3000
+      FRONTEND_URL: http://localhost:5173
+
+      SMTP_HOST: smtp.example.com
+      EMAIL_USER: email@gmail.com
+      EMAIL_PASS: your-email-password
+
+      REDIS_URL: redis://redis:6379
+
+      ACCESS_SECRET: secret1
+      ACCESS_EXPIRE: 15m
+      REFRESH_SECRET: secret2
+      REFRESH_EXPIRE: 7d
+      RESET_SECRET: secret3
+      RESET_EXPIRE: 15m
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  
+networks:
+  payment_records_network:
+    driver: bridge
